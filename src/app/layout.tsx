@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import ModalManager from "@/components/modal/modalManager/ModalManager";
 
 export const metadata: Metadata = {
   title: "Albaform",
@@ -13,7 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        {children}
+        <ModalManager />
+      </body>
     </html>
   );
 }
