@@ -15,15 +15,22 @@
   font-style: normal;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Pretendard, Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .header-tablet {
+    @apply ml-[32px] h-[60px] gap-[24px] px-[72px] py-[15px] text-lg;
+  }
+
+  .header-pc {
+    @apply ml-[48px] h-[88px] gap-[24px] px-[240px] py-[24px] text-xl;
+  }
+
+  .sidebar-pc {
+    @apply w-[]
+  }
 }
