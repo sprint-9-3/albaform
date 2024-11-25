@@ -35,6 +35,7 @@ export default {
         "orange-200": "#FBAF37",
         "orange-300": "#F89A05",
         "orange-400": "#E18C05",
+        "orange-500": "#FFF7EB",
         "blue-100": "#535779",
         "blue-200": "#3E415B",
         "blue-300": "#2A2C3D",

@@ -22,6 +22,11 @@ const ModalPage = () => {
           이어쓰기 모달
         </button>
       </div>
+      <div>
+        <button onClick={() => openModal("SelectProgressModal")}>
+          진행상태 선택
+        </button>
+      </div>
     </div>
   );
 };

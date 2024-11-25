@@ -13,12 +13,8 @@ const DeleteAlbaformModal = () => {
             className="object-cover"
           />
         </div>
-        <strong className="mt-[24px] text-2lg font-semibold text-black-400 pc:text-2xl">
-          알바폼을 삭제할까요?
-        </strong>
-        <p className="mt-[8px] text-md font-regular text-gray-400 pc:text-xl">
-          삭제 후 정보를 복구할 수 없어요.
-        </p>
+        <strong className="modal-title">알바폼을 삭제할까요?</strong>
+        <p className="modal-sub-title">삭제 후 정보를 복구할 수 없어요.</p>
         <button className="mt-[24px] h-[56px] w-[327px] border bg-gray-400 pc:h-[72px] pc:w-[360px]">
           시작하기
         </button>

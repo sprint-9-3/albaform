@@ -60,11 +60,11 @@ body {
     }
 
     .modal-title {
-      @apply text-2xl;
+      @apply mt-[32px] text-2xl;
     }
 
     .modal-sub-title {
-      @apply text-xl;
+      @apply mt-[16px] text-xl;
     }
   }
 }
