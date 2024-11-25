@@ -30,7 +30,7 @@ export default {
         "black-300": "#373737",
         "black-400": "#1f1f1f",
         "black-500": "#040404",
-        "orange-50": "#EEF9F6",
+        "orange-50": "#FFF7EB",
         "orange-100": "#FCC369",
         "orange-200": "#FBAF37",
         "orange-300": "#F89A05",
