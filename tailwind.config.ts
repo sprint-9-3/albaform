@@ -38,6 +38,7 @@ export default {
         "blue-100": "#535779",
         "blue-200": "#3E415B",
         "blue-300": "#2A2C3D",
+        "oldLace-50": "#fff7eb",
         red: "#fc4100",
       },
       fontWeight: {
