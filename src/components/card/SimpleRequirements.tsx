@@ -1,6 +1,7 @@
 import { formatDate } from "@/utils/formatDate";
 import Image from "next/image";
-interface RecruitmentCardProps {
+
+interface SimpleRequirementsProps {
   info: {
     workStartDate: string;
     workEndDate: string;
@@ -10,7 +11,8 @@ interface RecruitmentCardProps {
     hourlyWage: number;
   };
 }
-const RecruitInfoCard = ({ info }: RecruitmentCardProps) => {
+
+const SimpleRequirements = ({ info }: SimpleRequirementsProps) => {
   const [formaatedStartDate, formaatedEndDate] = formatDate(
     info.workStartDate,
     info.workEndDate
@@ -65,4 +67,4 @@ const RecruitInfoCard = ({ info }: RecruitmentCardProps) => {
     </section>
   );
 };
-export default RecruitInfoCard;
+export default SimpleRequirements;

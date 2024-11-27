@@ -3,11 +3,11 @@ import getCurrentTime from "@/utils/getCurrentTime";
 import isPast from "@/utils/isPast";
 import Image from "next/image";
 
-interface ApplicantCardProps {
+interface ApplicationInfoProps {
   info: AppliedAlbaData;
 }
 
-const ApplicantCard = ({ info }: ApplicantCardProps) => {
+const ApplicationInfo = ({ info }: ApplicationInfoProps) => {
   const hireStatus =
     {
       REJECTED: "거절",
@@ -62,4 +62,4 @@ const ApplicantCard = ({ info }: ApplicantCardProps) => {
   );
 };
 
-export default ApplicantCard;
+export default ApplicationInfo;

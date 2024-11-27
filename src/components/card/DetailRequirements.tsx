@@ -1,4 +1,4 @@
-interface RequirementsDetailProps {
+interface DetailRequirementsProps {
   info: {
     preferred: string;
     age: string | "연령무관";
@@ -8,7 +8,7 @@ interface RequirementsDetailProps {
   };
 }
 
-const RequirementsDetail = ({ info }: RequirementsDetailProps) => {
+const DetailRequirements = ({ info }: DetailRequirementsProps) => {
   const requirementList = [
     {
       id: 0,
@@ -54,4 +54,4 @@ const RequirementsDetail = ({ info }: RequirementsDetailProps) => {
   );
 };
 
-export default RequirementsDetail;
+export default DetailRequirements;
