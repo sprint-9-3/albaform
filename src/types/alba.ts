@@ -38,7 +38,7 @@ export interface AlbaformDetailData {
   age: string;
   education: string;
   gender: string;
-  numberOfPositions: number; //
+  numberOfPositions: number;
   isPublic: boolean;
   hourlyWage: number;
   isNegotiableWorkDays: boolean;
