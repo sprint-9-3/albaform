@@ -1,6 +1,5 @@
 "use client";
 
-import { createPortal } from "react-dom";
 import { useSidebarState } from "@/hooks/useSidebarState";
 import Image from "next/image";
 import Link from "next/link";
