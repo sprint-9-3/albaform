@@ -34,6 +34,11 @@ const ModalPage = () => {
         </button>
       </div>
       <div>
+        <button onClick={() => openModal("ChangePasswordModal")}>
+          비밀번호 변경
+        </button>
+      </div>
+      <div>
         <button onClick={() => openModal("ChangeMyInfoModal")}>
           내 정보 수정
         </button>
