@@ -60,6 +60,16 @@ body {
     @apply max-w-[640px] rounded-lg border-[0.5px] border-gray-200 p-[14px] placeholder:text-gray-400 focus:border-orange-300;
   }
 
+  /* 스크롤바 숨기기 - 전상민 */
+  .scrollbar-hidden {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+
   /* PC 크기에서 적용될 스타일 */
   @media (min-width: 1200px) {
     .modal-image-container {

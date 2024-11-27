@@ -38,6 +38,11 @@ const ModalPage = () => {
           내 정보 수정
         </button>
       </div>
+      <div>
+        <button onClick={() => openModal("ChangeCEOInfoModal")}>
+          사장님 정보 관리
+        </button>
+      </div>
     </div>
   );
 };

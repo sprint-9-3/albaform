@@ -4,7 +4,7 @@ import ModalContainer from "../modalContainer/ModalContainer";
 const DeleteAlbaformModal = () => {
   return (
     <ModalContainer>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center pc:mx-10">
         <div className="modal-image-container">
           <Image
             src="/image/email-orange.svg"

@@ -19,7 +19,7 @@ const SelectProgressModal = () => {
 
   return (
     <ModalContainer>
-      <div className="flex flex-col items-center pb-[8px] pt-[4px] pc:mx-[-40px] pc:pb-[8px] pc:pt-[8px]">
+      <div className="flex flex-col items-center pb-[8px] pt-[4px] pc:pb-[8px] pc:pt-[8px]">
         <strong className="modal-title mt-0">진행상태 선택</strong>
         <p className="modal-sub-title">현재 진행상태를 알려주세요.</p>
 

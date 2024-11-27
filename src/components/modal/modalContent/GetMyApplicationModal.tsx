@@ -32,7 +32,7 @@ const GetMyApplicationModal = () => {
 
   return (
     <ModalContainer>
-      <div className="flex flex-col pb-[8px] pc:mx-[-40px]">
+      <div className="flex flex-col pb-[8px]">
         <strong className="text-2lg font-semibold text-black-400 pc:text-[32px] pc:leading-[46px]">
           내 지원 내역
         </strong>

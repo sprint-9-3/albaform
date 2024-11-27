@@ -28,7 +28,7 @@ const ChangeMyInfoModal = () => {
 
   return (
     <ModalContainer>
-      <div className="flex flex-col items-center pb-[8px] pc:mx-[-40px]">
+      <div className="flex flex-col items-center pb-[8px]">
         <strong className="text-2lg font-semibold text-black-400 pc:text-[32px] pc:leading-[46px]">
           내 정보 수정
         </strong>
