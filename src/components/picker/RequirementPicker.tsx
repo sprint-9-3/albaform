@@ -25,19 +25,20 @@ const RequirementPicker = ({ label }: labelType) => {
   };
 
   return (
-    <div className="relative">
+    <section className="relative h-[92px] w-[327px] pc:h-[112px] pc:w-[640px]">
+      <h3 className="text-md text-black-400 pc:text-xl">{label}</h3>
       {isTextMode ? (
         <input
           type="text"
           value={value}
           onKeyDown={handleKeyDown}
           onChange={(e) => setValue(e.target.value)} // 텍스트 입력 핸들링
-          className="h-[54px] w-[327px] rounded-lg bg-background-200 p-[14px] px-6 text-lg text-black-400 pc:h-[64px] pc:w-[640px] pc:px-8 pc:text-xl"
+          className="mt-2 h-[54px] w-[327px] rounded-lg bg-background-200 p-[14px] px-6 text-lg text-black-400 pc:h-[64px] pc:w-[640px] pc:px-8 pc:text-xl"
         />
       ) : (
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex h-[54px] w-[327px] items-center rounded-lg bg-background-200 p-[14px] px-6 text-lg text-black-400 pc:h-[64px] pc:w-[640px] pc:px-8 pc:text-xl"
+          className="mt-2 flex h-[54px] w-[327px] items-center rounded-lg bg-background-200 p-[14px] px-6 text-lg text-black-400 pc:h-[64px] pc:w-[640px] pc:px-8 pc:text-xl"
         >
           <span className="flex-grow text-left text-gray-400">
             {value || "선택"}
@@ -53,7 +54,7 @@ const RequirementPicker = ({ label }: labelType) => {
       {label && isOpen && (
         <PickableList setValue={setValue} setIsOpen={setIsOpen} label={label} />
       )}
-    </div>
+    </section>
   );
 };
 
