@@ -1,13 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 interface FloatingButtonProps {
   icon: string;
   size?: "small" | "large";
   color?: "orange300" | "oldLace50" | "white";
   children?: string;
+  href: string;
   className?: string;
+  [key: string]: any;
 }
 
 const FloatingButton = ({
@@ -15,6 +18,7 @@ const FloatingButton = ({
   size = "small",
   color = "orange300",
   children = "",
+  href = "",
   className = "",
   ...rest
 }: FloatingButtonProps) => {
@@ -53,7 +57,7 @@ const FloatingButton = ({
   } ${className}`;
 
   return (
-    <button className={finalClassName} {...rest}>
+    <Link href={href} className={finalClassName} {...rest}>
       <Image
         src={icon}
         alt="buttonIcon"
@@ -61,7 +65,7 @@ const FloatingButton = ({
         height={size === "small" ? 24 : 36}
       />
       {children && <span>{children}</span>}
-    </button>
+    </Link>
   );
 };
 

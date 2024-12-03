@@ -40,6 +40,7 @@ export default {
         "blue-200": "#3E415B",
         "blue-300": "#2A2C3D",
         "oldLace-50": "#fff7eb",
+        "tuatara-900": "#3e3e3e",
         red: "#fc4100",
       },
       fontWeight: {

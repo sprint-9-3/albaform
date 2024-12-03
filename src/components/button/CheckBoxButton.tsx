@@ -3,7 +3,6 @@
 interface CheckBoxButtonProps {
   size?: "small" | "large";
   name: string;
-  value: string;
   checked?: boolean;
   disabled?: boolean;
   onChange?: (value: string) => void;
@@ -12,7 +11,6 @@ interface CheckBoxButtonProps {
 const CheckBoxButton = ({
   size = "small",
   name,
-  value,
   checked = false,
   disabled = false,
   onChange,
@@ -50,16 +48,16 @@ const CheckBoxButton = ({
   return (
     <div className="flex items-center gap-x-[10px]">
       <input
-        id={value}
+        id={name}
         type="checkbox"
         name={name}
-        value={value}
+        value={name}
         checked={checked}
         onChange={handleChange}
         disabled={disabled}
         className={classes}
       />
-      <label htmlFor={value} className={`font-medium ${sizeLableClass}`}>
+      <label htmlFor={name} className={`font-medium ${sizeLableClass}`}>
         {name}
       </label>
     </div>
