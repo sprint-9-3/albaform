@@ -10,8 +10,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signinAction } from "../actions/signinActions";
 import { useRouter } from "next/navigation";
-import useToken from "@/hooks/useToken";
-import Cookies from "js-cookie";
 import SolidButton from "@/components/button/SolidButton";
 import { cls } from "@/utils/dynamicTailwinds";
 import { useToast } from "@/hooks/useToast";
@@ -19,7 +17,6 @@ import { useToast } from "@/hooks/useToast";
 const SigninContents = () => {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
-  const { setTokens } = useToken();
   const { addToast } = useToast();
   const {
     register,
@@ -43,17 +40,14 @@ const SigninContents = () => {
       const response = await signinAction(formData);
 
       if (response.status === 200) {
-        setTokens(response.data.accessToken, response.data.refreshToken);
-        Cookies.set("role", response.data.user.role);
-
         router.push("/");
       } else {
-        addToast(response.error as string, "error");
+        addToast(response.error as string, "warning");
         console.error("로그인 에러", response.error, response.status);
       }
     } catch (error) {
       console.error("로그인 에러", error);
-      addToast("로그인에 실패했습니다.", "error");
+      addToast("로그인에 실패했습니다.", "warning");
     }
   };
 

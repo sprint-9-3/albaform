@@ -4,6 +4,7 @@ import {
   applicantSchema,
   ownerSchema,
 } from "../../../../schema/signup/signupSchema";
+import { setCookie } from "../../../../lib/cookie";
 
 export const signupActions = async (formData: FormData) => {
   const data = {
@@ -59,10 +60,12 @@ export const signupActions = async (formData: FormData) => {
     }
 
     const resData = await response.json();
+    const { accessToken, refreshToken, ...rest } = resData;
+
+    await setCookie(accessToken, refreshToken, rest.user.role);
 
     return {
       status: response.status,
-      data: resData,
     };
   } catch (error) {
     console.error("signupActions에서 에러 발생", error);

@@ -1,6 +1,7 @@
 "use server";
 
 import { signInSchema } from "@/schema/signin/signinSchema";
+import { setCookie } from "../../../../lib/cookie";
 
 export const signinAction = async (formData: FormData) => {
   const data = {
@@ -49,8 +50,11 @@ export const signinAction = async (formData: FormData) => {
     };
   }
 
+  const { accessToken, refreshToken, ...rest } = await response.json();
+
+  await setCookie(accessToken, refreshToken, rest.user.role);
+
   return {
     status: response.status,
-    data: await response.json(),
   };
 };

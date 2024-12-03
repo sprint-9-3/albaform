@@ -1,47 +1,39 @@
 "use server";
 
-export const profileImgActions = async (
-  imgFormData: FormData,
-  accessToken: string
-) => {
+import instance from "@/lib/instance";
+
+export const profileImgActions = async (imgFormData: FormData) => {
   try {
     // 이미지 업로드
-    const imageData = await fetch(
+    const imageData = await instance(
       `${process.env.NEXT_PUBLIC_API_URL}/images/upload`,
       {
         method: "POST",
         body: imgFormData,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
       }
     );
 
-    if (!imageData.ok) {
+    if (imageData.status !== 201) {
       return {
         status: imageData.status,
         message: "이미지 업로드 실패",
       };
     }
 
-    const data = await imageData.json();
-
     // 프로필 사진 업로드
-    const profileResponse = await fetch(
+    const profileResponse = await instance(
       `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
       {
         method: "PATCH",
-        body: JSON.stringify({ imageUrl: data.url }),
+        body: JSON.stringify({ imageUrl: imageData.data.url }),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
         },
       }
     );
 
     return {
       status: profileResponse.status,
-      data: await profileResponse.json(),
     };
   } catch (error) {
     console.error("프로필 이미지 업로드 실패:", error);

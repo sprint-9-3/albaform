@@ -1,12 +1,13 @@
 import { profileImgAtom } from "@/atoms/signupAtomStore";
+import { useToast } from "@/hooks/useToast";
 import { useSetAtom } from "jotai";
 import Image from "next/image";
 import { useState } from "react";
 
 const ProfileImg = () => {
-  const [imgError, setImgError] = useState("");
   const [previewSrc, setPreviewSrc] = useState("");
   const setProfileImg = useSetAtom(profileImgAtom);
+  const { addToast } = useToast();
 
   const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -16,12 +17,10 @@ const ProfileImg = () => {
       const imgCheck = file.size < 5 * 1024 * 1024;
 
       if (!imgCheck) {
-        setImgError("이미지는 5MB를 넘을 수 없습니다."); // 토스트 변경해야 하며, imgError 상태 불필요
-        alert("이미지는 5MB를 넘을 수 없습니다."); // 임시
+        addToast("이미지는 5MB를 넘을 수 없습니다.", "warning");
         return;
       }
 
-      setImgError("");
       e.target.value = "";
 
       const imgPreview = new FileReader();

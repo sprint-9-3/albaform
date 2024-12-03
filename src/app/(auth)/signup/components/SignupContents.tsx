@@ -15,14 +15,13 @@ import {
 import { signupActions } from "../actions/signupActions";
 import { profileImgAtom } from "@/atoms/signupAtomStore";
 import { useAtomValue } from "jotai";
-import useToken from "@/hooks/useToken";
 import { profileImgActions } from "../actions/profileImgActions";
 import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";
-import Cookies from "js-cookie";
 import SolidButton from "@/components/button/SolidButton";
 import { cls } from "@/utils/dynamicTailwinds";
 import { useToast } from "@/hooks/useToast";
+
 export type FormSchema =
   | z.infer<typeof applicantSchema>
   | z.infer<typeof ownerSchema>;
@@ -41,7 +40,7 @@ const SignupContents = ({
   const [confirmMsg, setConfirmMsg] = useState("");
   const currentParams = new URLSearchParams(searchParams.toString());
   const profileImg = useAtomValue(profileImgAtom);
-  const { setTokens } = useToken();
+
   const { addToast } = useToast();
   const {
     register,
@@ -98,45 +97,39 @@ const SignupContents = ({
       const response = await signupActions(formData);
 
       if (response.status === 200) {
-        const { accessToken } = response.data;
-
         if (profileImg) {
           const imgFormData = new FormData();
           imgFormData.append("image", profileImg);
 
           try {
-            const profileImgResponse = await profileImgActions(
-              imgFormData,
-              accessToken
-            );
+            const profileImgResponse = await profileImgActions(imgFormData);
 
             if (profileImgResponse.status !== 200) {
-              addToast(profileImgResponse.message as string, "error");
-              throw new Error(
-                profileImgResponse.message || "프로필 이미지 업로드 실패"
+              addToast(profileImgResponse.message as string, "warning");
+              console.error(
+                "프로필 사진 업로드 오류",
+                profileImgResponse.message
               );
             }
           } catch (error) {
             console.error("프로필 사진 업로드 오류", error);
             addToast(
               "회원가입은 완료되었으나 프로필 사진 업로드 중 오류가 발생했습니다.",
-              "error"
+              "warning"
             );
           }
         }
 
-        addToast("회원가입이 완료되었습니다.");
+        addToast("회원가입이 완료되었습니다.", "info");
         reset();
-        setTokens(response.data.accessToken, response.data.refreshToken);
-        Cookies.set("role", response.data.user.role);
         router.push("/");
       } else {
         console.error(response.message, response.status);
-        addToast(response.message as string, "error");
+        addToast(response.message as string, "warning");
       }
     } catch (error) {
       console.error("signup에서 에러 발생", error);
-      addToast("회원가입 중 오류가 발생했습니다.", "error");
+      addToast("회원가입 중 오류가 발생했습니다.", "warning");
     }
   };
 

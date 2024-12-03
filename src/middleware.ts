@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export const middleware = (request: NextRequest) => {
-  const path = new URL(request.url).pathname;
+  const url = new URL(request.url);
+  const path = url.pathname;
   const role = request.cookies.get("role");
   const referrer = request.headers.get("referrer");
 
@@ -15,8 +16,8 @@ export const middleware = (request: NextRequest) => {
     return NextResponse.redirect(new URL(referrer || "/", request.url));
   }
 
-  // 로그인되어 있으면 로그인페이지나 회원가입페이지로 못가도록 막음
-  if (path.startsWith("/signin") || path.startsWith("/signup")) {
+  // 로그인되어 있으면 로그인페이지로 못가도록 막음
+  if (path.startsWith("/signin")) {
     const accessToken = request.cookies.get("accessToken");
 
     if (accessToken) {
