@@ -5,26 +5,9 @@ import { formatDate } from "../../utils/formatDate";
 import Image from "next/image";
 import CommentAndLikeCount from "../CommentAndLikeCount";
 import UserInfoInCard from "../UserInfoInCard";
+import { PostCardProps } from "@/types/post";
 
-interface PostCardProps {
-  info: {
-    writer: {
-      imageUrl: string;
-      nickname: string;
-      id: number;
-    };
-    updatedAt: string;
-    createdAt: string;
-    commentCount: number;
-    likeCount: number;
-    imageUrl: string;
-    content: string;
-    title: string;
-    id: number;
-  };
-}
-
-const PostCard = ({ info }: PostCardProps) => {
+const PostCard = ({ info }: { info: PostCardProps }) => {
   const [isHover, setIsHover] = useState(false);
   const [_, formattedCreatedDate] = formatDate("", info.createdAt);
 

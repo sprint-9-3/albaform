@@ -11,6 +11,7 @@ const SearchInput = ({ ...rest }) => {
   const router = useRouter();
 
   const keyword = searchParams.get("keyword");
+  const searchParamsObj = new URLSearchParams(searchParams.toString());
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -20,8 +21,8 @@ const SearchInput = ({ ...rest }) => {
     e.preventDefault();
     if (keyword === search) return;
 
-    const query = search ? `?keyword=${search}` : "";
-    router.push(`${pathname}${query}`);
+    searchParamsObj.set("keyword", search);
+    router.push(`${pathname}?${searchParamsObj.toString()}`);
   };
 
   return (
