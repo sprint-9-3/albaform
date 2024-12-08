@@ -16,7 +16,7 @@ const Carousel = ({ imageUrls }: { imageUrls: string[] }) => {
   }, [imageUrls.length]);
 
   return (
-    <section className="relative h-[260px] w-screen pc:h-[562px]">
+    <article className="relative h-[260px] w-screen pc:h-[562px]">
       {/* 캐러셀 이미지 */}
       {imageUrls.map((imageUrl, index) => (
         <figure
@@ -43,7 +43,7 @@ const Carousel = ({ imageUrls }: { imageUrls: string[] }) => {
           ))}
         </div>
       </div>
-    </section>
+    </article>
   );
 };
 

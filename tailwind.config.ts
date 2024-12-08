@@ -58,7 +58,21 @@ export default {
         sm: ["13px", "22px"],
         xs: ["12px", "18px"],
       },
+      gridTemplateAreas: {
+        layout: ["box1 box4", "box2 box5", "box3 box6", ". box7"],
+      },
+      gridArea: {
+        box1: "box1",
+        box2: "box2",
+        box3: "box3",
+        box4: "box4",
+        box5: "box5",
+        box6: "box6",
+        box7: "box7",
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require("@savvywombat/tailwindcss-grid-areas"), // grid-area를 사용하기 위한 플러그인
+  ],
 } satisfies Config;

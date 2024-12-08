@@ -1,11 +1,11 @@
 import Image from "next/image";
 
-interface ApplicantStatsProps {
+type ApplicantStatsProps = {
   info: {
     scrapCount: number;
     applyCount: number;
   };
-}
+};
 
 const ApplicantStats = ({ info }: ApplicantStatsProps) => {
   const contentList = [
@@ -26,7 +26,7 @@ const ApplicantStats = ({ info }: ApplicantStatsProps) => {
   ];
 
   return (
-    <section className="h-[84px] w-[327px] border-b border-t border-line-100 px-2 py-4 text-xs pc:h-[152px] pc:w-[770px] pc:px-4 pc:py-8 pc:text-2lg">
+    <section className="h-[84px] w-full border-b border-t border-line-100 px-2 py-4 text-xs pc:h-[152px] pc:px-4 pc:py-8 pc:text-2lg">
       {contentList.map((list) => (
         <div key={list.id} className="flex items-center gap-3">
           <div className="flex h-[26px] w-[100px] items-center pc:h-[38px] pc:w-[120px]">

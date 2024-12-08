@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
+    "@savvywombat/tailwindcss-grid-areas": "^4.0.0",
     "@types/js-cookie": "^3.0.6",
     "@typescript-eslint/eslint-plugin": "^8.15.0",
     "@typescript-eslint/parser": "^8.15.0",
