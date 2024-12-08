@@ -61,6 +61,10 @@ body {
     @apply max-w-[640px] rounded-lg border-[0.5px] border-gray-200 p-[14px] placeholder:text-gray-400 focus:border-orange-300;
   }
 
+  .addform-input-base {
+    @apply max-w-[640px] rounded-lg border-none bg-background-200 p-[14px] placeholder:text-gray-400 transition-all;
+  }
+
   /* 스크롤바 숨기기 */
   .scrollbar-hidden {
     scrollbar-width: none; /* Firefox */

@@ -8,6 +8,7 @@ const RangePicker = ({ range }: { range: [string, string] }) => {
 
   return (
     <button
+      type="button"
       onClick={() => setIsOpen(!isOpen)}
       className="flex h-[54px] w-[327px] items-center rounded-lg bg-background-200 p-[14px] disabled:text-gray-400 pc:h-[64px] pc:w-[640px]"
     >

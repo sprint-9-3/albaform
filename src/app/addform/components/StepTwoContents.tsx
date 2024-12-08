@@ -8,7 +8,9 @@ interface StepTwoContentsProps {
 }
 
 const StepTwoContents = ({ register, errors }: StepTwoContentsProps) => {
-  return <div>StepTwoContents</div>;
+  return (
+    <div className="flex flex-col space-y-8 pc:w-[640px]">StepTwoContents</div>
+  );
 };
 
 export default StepTwoContents;

@@ -99,6 +99,7 @@ const ImageInput = ({ size = "small", onImageChange }: ImageInputProps) => {
           />
           {/* 취소 버튼 */}
           <button
+            type="button"
             onClick={() => handleRemoveImage(index)}
             className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 cursor-pointer border-0 bg-transparent p-0"
           >

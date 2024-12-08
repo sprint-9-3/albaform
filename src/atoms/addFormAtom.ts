@@ -1,3 +1,4 @@
+import { AddFormStepProps } from "@/types/addform";
 import { atom } from "jotai";
 
 interface AlbaformCreateStep {
@@ -11,3 +12,7 @@ export const addFormStepAtom = atom<AlbaformCreateStep>({
   value: "stepOne",
   stepNum: 1,
 });
+
+export const currentImageListAtom = atom<string[]>([]);
+
+export const temporaryDataByStepAtom = atom<AddFormStepProps>({});

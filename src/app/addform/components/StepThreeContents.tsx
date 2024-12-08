@@ -8,7 +8,11 @@ interface StepThreeContentsProps {
 }
 
 const StepThreeContents = ({ register, errors }: StepThreeContentsProps) => {
-  return <div>StepThreeContents</div>;
+  return (
+    <div className="flex flex-col space-y-8 pc:w-[640px]">
+      StepThreeContents
+    </div>
+  );
 };
 
 export default StepThreeContents;

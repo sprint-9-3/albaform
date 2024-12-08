@@ -1,14 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
 import { calendarAtom } from "@/atoms/calendarAtom";
 import RangePicker from "./RangePicker";
 import Calendar from "./Calendar";
 
-const DatePickerCalendar = () => {
+const DatePickerCalendar = ({
+  setDateRange,
+  initialDate,
+}: {
+  setDateRange: (dateRange: [string, string]) => void;
+  initialDate: [string, string];
+}) => {
   const isOpen = useAtomValue(calendarAtom);
-  const [range, setRange] = useState<[string, string]>(["", ""]);
+  const [range, setRange] = useState<[string, string]>(initialDate || ["", ""]);
+
+  useEffect(() => {
+    if (range[0] && range[1]) {
+      setDateRange(range);
+    }
+  }, [range, setDateRange]);
+
+  useEffect(() => {
+    setRange(initialDate);
+  }, [initialDate]);
 
   return (
     <div className="relative">

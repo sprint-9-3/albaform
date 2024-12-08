@@ -9,10 +9,13 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { Fragment } from "react";
+import { currentImageListAtom } from "@/atoms/addFormAtom";
+import { useAtomValue } from "jotai";
 
 const StepContainer = () => {
   const searchParams = useSearchParams();
-  const step = searchParams.get("step");
+  const step = searchParams.get("step") || "stepOne";
+  const currentImageList = useAtomValue(currentImageListAtom);
 
   const {
     register,
@@ -20,6 +23,7 @@ const StepContainer = () => {
     reset,
     watch,
     setValue,
+    getValues,
     formState: { errors, isValid, isSubmitting },
   } = useForm<z.infer<typeof addFormSchema>>({
     resolver: zodResolver(addFormSchema),
@@ -29,6 +33,7 @@ const StepContainer = () => {
       description: "",
       recruitmentStartDate: "",
       recruitmentEndDate: "",
+      imageUrls: [],
       numberOfPositions: 0,
       gender: "",
       education: "",
@@ -46,7 +51,7 @@ const StepContainer = () => {
     },
   });
 
-  const compoentsByStepArr = [
+  const componentsByStepArr = [
     { step: "stepOne", component: StepOneContents },
     { step: "stepTwo", component: StepTwoContents },
     { step: "stepThree", component: StepThreeContents },
@@ -54,10 +59,16 @@ const StepContainer = () => {
 
   return (
     <form className="p-6">
-      {compoentsByStepArr.map((component) => (
+      {componentsByStepArr.map((component) => (
         <Fragment key={component.step}>
           {step === component.step && (
-            <component.component register={register} errors={errors} />
+            <component.component
+              register={register}
+              errors={errors}
+              watch={watch}
+              setValue={setValue}
+              getValues={getValues}
+            />
           )}
         </Fragment>
       ))}

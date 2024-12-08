@@ -25,6 +25,7 @@ const Calendar = ({ setRange }: { setRange: SetRangeType }) => {
           기간 선택
         </span>
         <button
+          type="button"
           onClick={() => setIsOpen(false)}
           className="relative size-6 pc:size-9"
         >

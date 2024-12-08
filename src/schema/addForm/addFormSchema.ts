@@ -1,24 +1,17 @@
 import { z } from "zod";
 
-const htmlRegex = /(<([^>]+)>)/gi;
-const xssRegex = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
-const sqlInjectionRegex =
-  /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|--|#|\/\*|\*\/)\b)/i;
-
 export const addFormSchema = z.object({
   title: z
     .string()
     .min(1, { message: "제목을 입력해주세요." })
-    .regex(/([A-Za-zㄱ-ㅎ가-힣0-9])/, {
-      message: "제목에 특수문자는 사용할 수 없습니다.",
-    })
+    .max(20, { message: "제목은 20자 이상 입력할 수 없습니다." })
     .trim(),
   description: z
     .string()
     .min(1, { message: "내용을 입력해주세요." })
     .max(200, { message: "내용은 200자 이상 입력할 수 없습니다." })
-    .regex(htmlRegex || xssRegex || sqlInjectionRegex, {
-      message: "특정 특수문자는 사용할 수 없습니다.",
+    .regex(/([A-Za-zㄱ-ㅎ가-힣0-9!@#$%^&*()_+={}\[\]:;"'<>,.?\/`~\\|-])/, {
+      message: "해당 기호는 사용할 수 없습니다.",
     })
     .trim(),
   recruitmentStartDate: z
@@ -27,6 +20,9 @@ export const addFormSchema = z.object({
   recruitmentEndDate: z
     .string()
     .min(1, { message: "모집 종료일을 입력해주세요." }),
+  imageUrls: z
+    .array(z.string())
+    .min(1, { message: "이미지를 1장 이상 첨부해주세요." }),
   numberOfPositions: z
     .number()
     .min(1, { message: "모집 인원을 입력해주세요." }),

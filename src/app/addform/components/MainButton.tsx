@@ -1,13 +1,12 @@
 "use client";
 
-import { AddFormStepProps } from "@/types/addform";
-
-interface StepSidebarProps {
-  temporaryDataByStep: AddFormStepProps;
-}
+import { temporaryDataByStepAtom } from "@/atoms/addFormAtom";
+import SolidButton from "@/components/button/SolidButton";
+import { useAtomValue } from "jotai";
 
 // 추후 form 작업을 하며 zod 타입, react-hook-form 타입이 추가될 예정입니다.
-const MainButton = ({ temporaryDataByStep }: StepSidebarProps) => {
+const MainButton = () => {
+  const temporaryDataByStep = useAtomValue(temporaryDataByStepAtom);
   const temporaryDataArr = [
     { step: "stepOne", data: temporaryDataByStep.stepOne },
     { step: "stepTwo", data: temporaryDataByStep.stepTwo },
@@ -29,18 +28,12 @@ const MainButton = ({ temporaryDataByStep }: StepSidebarProps) => {
 
   return (
     <div className="flex flex-col space-y-2 p-6">
-      <button
-        onClick={handleTemporarySave}
-        className="rounded-lg border-[1px] border-gray-200 p-4 text-base font-semibold text-gray-300 transition-all hover:border-orange-300 hover:bg-background-100 hover:text-orange-300 pc:text-xl"
-      >
+      <SolidButton style="outOrange300" onClick={handleTemporarySave}>
         임시 저장
-      </button>
-      <button
-        onClick={onSubmit}
-        className="rounded-lg bg-gray-100 p-4 text-base font-semibold text-white transition-all hover:bg-orange-300 pc:text-xl"
-      >
+      </SolidButton>
+      <SolidButton style="orange300" onClick={onSubmit} disabled={true}>
         등록하기
-      </button>
+      </SolidButton>
     </div>
   );
 };
