@@ -1,40 +1,43 @@
 "use server";
 
 import { Suspense } from "react";
-import { getAlbaList } from "./getAlbaList";
-import AlbaList from "./components/AlbaList";
-import LoadingSkeleton from "./components/LoadingSkeleton";
-import { cookies } from "next/headers";
+import AlbaListFetcher from "./components/AlbaListFetcher";
+import CardListSkeleton from "./components/CardListSkeleton";
 
 interface AlbaListPageProps {
   searchParams: Promise<{
     keyword?: string;
     orderBy?: string;
-    isRecruiting?: boolean;
+    isRecruiting?: string;
+    isPublic?: string;
   }>;
 }
 
 const AlbaListPage = async ({ searchParams }: AlbaListPageProps) => {
-  const { keyword, orderBy, isRecruiting } = await searchParams;
+  const { keyword, orderBy, isRecruiting, isPublic } = await searchParams;
 
-  const cookieStore = await cookies();
-  const role = cookieStore.get("role")?.value || "defaultRole";
-
-  const response = await getAlbaList({
-    orderBy: orderBy || "mostRecent",
-    limit: 6,
-    cursor: 0,
+  const params = {
     keyword,
-    isRecruiting: isRecruiting || undefined,
-  });
-
-  const albaList = response.data || [];
-  const nextCursor: number | null = response.nextCursor;
+    orderBy,
+    isRecruiting:
+      isRecruiting === "true"
+        ? true
+        : isRecruiting === "false"
+          ? false
+          : undefined,
+    isPublic:
+      isPublic === "true" ? true : isPublic === "false" ? false : undefined,
+  };
 
   return (
-    <Suspense fallback={<LoadingSkeleton />}>
-      <AlbaList list={albaList} nextCursor={nextCursor} role={role} />
-    </Suspense>
+    <div className="flex justify-center">
+      <Suspense
+        key={`${params.orderBy}-${params.keyword}-${params.isRecruiting}-${params.isPublic}`}
+        fallback={<CardListSkeleton count={6} />}
+      >
+        <AlbaListFetcher params={params} />
+      </Suspense>
+    </div>
   );
 };
 

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import emptyIcon from "@/../public/icon/empty-md.svg";
-import emptyIconLarge from "@/../public/icon/empty-lg.svg";
 
 const EmptyState = ({ role }: { role: string }) => {
   return (
@@ -10,14 +9,7 @@ const EmptyState = ({ role }: { role: string }) => {
         width={80}
         height={80}
         alt="null icon"
-        className="pc:hidden"
-      />
-      <Image
-        src={emptyIconLarge}
-        width={120}
-        height={120}
-        alt="null icon"
-        className="hidden pc:block"
+        className="pc:h-[120px] pc:w-[120px]"
       />
       {role === "OWNER" ? (
         <span className="text-center text-md text-gray-400 pc:text-2lg">
