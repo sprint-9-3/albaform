@@ -6,6 +6,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
+import { usePrevPage } from "@/hooks/usePrevPage";
+import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -21,22 +23,20 @@ const OrderByDropdown = () => {
     title: "최신 순",
     value: "mostRecent",
   });
-
-  const updateURL = (value: string) => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("orderBy", value);
-
-    window.history.pushState({}, "", `?${params}`);
-  };
+  const { updateURL } = useSearchParamsCustom({
+    key: "orderBy",
+    value: orderBy.value,
+  });
+  usePrevPage();
 
   const handleClick = (value: string, title: string) => {
     setOrderBy({ value, title });
-    updateURL(value);
+    updateURL({ key: "orderBy", value });
   };
 
   useEffect(() => {
-    updateURL(orderBy.value);
-  }, [orderBy.value]);
+    updateURL({ key: "orderBy", value: orderBy.value });
+  }, [orderBy.value, updateURL]);
 
   const valueArr = [
     { title: "최신 순", value: "mostRecent" },

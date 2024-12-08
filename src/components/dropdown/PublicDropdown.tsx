@@ -6,22 +6,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
+import { usePrevPage } from "@/hooks/usePrevPage";
+import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 import { useState } from "react";
 
 // isPublic 값을 URL에서 추출하여 서버로 전달하세요.
 const PublicDropdown = () => {
   const [isPublic, setIsPublic] = useState<boolean | undefined>(undefined);
+  const { updateURL } = useSearchParamsCustom({
+    key: "isPublic",
+    value: isPublic?.toString() || undefined,
+  });
+  usePrevPage();
 
   const handleClick = (status: boolean | undefined) => {
     setIsPublic(status);
-    const params = new URLSearchParams(window.location.search);
-    if (status === undefined) {
-      params.delete("isPublic");
-    } else {
-      params.set("isPublic", status?.toString() || "");
-    }
-
-    window.history.pushState({}, "", `?${params}`);
+    updateURL({ key: "isPublic", value: status?.toString() || undefined });
   };
 
   const valueArr = [

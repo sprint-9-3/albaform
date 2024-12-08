@@ -6,25 +6,25 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
+import { usePrevPage } from "@/hooks/usePrevPage";
+import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 import { useState } from "react";
 
 // status 값을 URL에서 추출하여 서버로 전달하세요.
 const RecruitDropdown = () => {
+  usePrevPage();
+
   const [recruitStatus, setRecruitStatus] = useState<string | undefined>(
     undefined
   );
+  const { updateURL } = useSearchParamsCustom({
+    key: "status",
+    value: recruitStatus?.toString() || undefined,
+  });
 
   const handleClick = (status: string | undefined) => {
     setRecruitStatus(status);
-    const params = new URLSearchParams(window.location.search);
-
-    if (status === undefined) {
-      params.delete("status");
-    } else {
-      params.set("status", status || "");
-    }
-
-    window.history.pushState({}, "", `?${params}`);
+    updateURL({ key: "status", value: status?.toString() || undefined });
   };
 
   const valueArr = [

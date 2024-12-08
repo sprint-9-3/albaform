@@ -8,6 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
+import { usePrevPage } from "@/hooks/usePrevPage";
+import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 import { useAtom, useAtomValue } from "jotai";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -16,21 +18,20 @@ import { useEffect } from "react";
 const AlbaformCreateDropdown = () => {
   const [currentStep, setCurrentStep] = useAtom(addFormStepAtom);
   const isOpen = useAtomValue(dropdownTriggerAtom("albaformCreate"));
-
-  const updateURL = (value: string) => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("step", value);
-
-    window.history.pushState({}, "", `?${params}`);
-  };
-
-  useEffect(() => {
-    updateURL(currentStep.value);
-  }, [currentStep]);
+  const { updateURL } = useSearchParamsCustom({
+    key: "step",
+    value: currentStep.value,
+  });
+  usePrevPage();
 
   const handleClick = (value: string, stepNum: number, title: string) => {
     setCurrentStep({ title, value, stepNum });
+    updateURL({ key: "step", value });
   };
+
+  useEffect(() => {
+    updateURL({ key: "step", value: currentStep.value });
+  }, [currentStep.value, updateURL]);
 
   const itemArr = [
     { title: "모집 내용", value: "stepOne", stepNum: 1 },
