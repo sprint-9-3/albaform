@@ -6,11 +6,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
+import { usePrevPage } from "@/hooks/usePrevPage";
 import { useState } from "react";
 
 // isPublic 값을 URL에서 추출하여 서버로 전달하세요.
 const PublicDropdown = () => {
   const [isPublic, setIsPublic] = useState<boolean | undefined>(undefined);
+  usePrevPage();
 
   const handleClick = (status: boolean | undefined) => {
     setIsPublic(status);

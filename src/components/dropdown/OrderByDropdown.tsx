@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
+import { usePrevPage } from "@/hooks/usePrevPage";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -21,6 +22,7 @@ const OrderByDropdown = () => {
     title: "최신 순",
     value: "mostRecent",
   });
+  usePrevPage();
 
   const updateURL = (value: string) => {
     const params = new URLSearchParams(window.location.search);

@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
+import { usePrevPage } from "@/hooks/usePrevPage";
 import { useAtom, useAtomValue } from "jotai";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -16,6 +17,7 @@ import { useEffect } from "react";
 const AlbaformCreateDropdown = () => {
   const [currentStep, setCurrentStep] = useAtom(addFormStepAtom);
   const isOpen = useAtomValue(dropdownTriggerAtom("albaformCreate"));
+  usePrevPage();
 
   const updateURL = (value: string) => {
     const params = new URLSearchParams(window.location.search);

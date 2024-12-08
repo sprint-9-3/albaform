@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
+import { usePrevPage } from "@/hooks/usePrevPage";
 import { useState } from "react";
 
 // isRecruiting 값을 URL에서 추출하여 서버로 전달하세요.
@@ -13,6 +14,7 @@ const ApplicationDropdown = () => {
   const [isRecruiting, setIsRecruiting] = useState<boolean | undefined>(
     undefined
   );
+  usePrevPage();
 
   const handleClick = (status: boolean | undefined) => {
     setIsRecruiting(status);
