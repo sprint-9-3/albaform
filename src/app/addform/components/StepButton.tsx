@@ -5,20 +5,20 @@ import { useEffect } from "react";
 import WritingTag from "./WritingTag";
 import { addFormStepAtom } from "@/atoms/addFormAtom";
 import { useAtom } from "jotai";
+import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 
 const StepButton = () => {
   const [currentStep, setCurrentStep] = useAtom(addFormStepAtom);
+  const { updateURL } = useSearchParamsCustom({
+    key: "step",
+    value: currentStep.value,
+  });
+
   const stepArr = [
     { title: "모집 내용", step: 1, value: "stepOne" },
     { title: "모집 조건", step: 2, value: "stepTwo" },
     { title: "근무 조건", step: 3, value: "stepThree" },
   ];
-
-  const updateURL = (value: string) => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("step", value);
-    window.history.pushState({}, "", `?${params}`);
-  };
 
   const handleClickStep = (value: string) => {
     setCurrentStep({
@@ -26,12 +26,12 @@ const StepButton = () => {
       value,
       stepNum: stepArr.find((item) => item.value === value)?.step,
     });
-    updateURL(value);
+    updateURL({ key: "step", value });
   };
 
   useEffect(() => {
-    updateURL(currentStep.value);
-  }, [currentStep]);
+    updateURL({ key: "step", value: currentStep.value });
+  }, [currentStep.value, updateURL]);
 
   return stepArr.map((item) => (
     <button

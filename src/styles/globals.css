@@ -127,6 +127,9 @@ body {
   input:focus {
     @apply caret-orange-300 outline-none;
   }
+  textarea:focus {
+    @apply caret-orange-300 outline-none;
+  }
 
   /* input type="number" 기본 스타일링 제거 */
   input[type="number"]::-webkit-inner-spin-button,

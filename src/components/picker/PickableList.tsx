@@ -6,6 +6,15 @@ type PickableListProps<T extends string> = {
     ? (value: { time: string; updated: boolean }) => void
     : (value: string) => void;
   setIsOpen: (isOpen: boolean) => void;
+  setStepTwoData?: React.Dispatch<
+    React.SetStateAction<{
+      numberOfPositions: number;
+      gender: string;
+      education: string;
+      age: string;
+      preferred: string;
+    }>
+  >;
 };
 
 const PickableList = <
@@ -14,8 +23,26 @@ const PickableList = <
   label,
   setValue,
   setIsOpen,
+  setStepTwoData,
 }: PickableListProps<T>) => {
   let list = selectRequirementsByLabel(label);
+
+  const matchLabelToStepTwoData = (label: T) => {
+    switch (label) {
+      case "모집인원":
+        return "numberOfPositions";
+      case "성별":
+        return "gender";
+      case "학력":
+        return "education";
+      case "연령":
+        return "age";
+      case "우대사항":
+        return "preferred";
+      default:
+        return "unknown";
+    }
+  };
 
   const handleClick = (el: string) => {
     if (label === "근무시간") {
@@ -26,6 +53,12 @@ const PickableList = <
       });
     } else {
       (setValue as (value: string) => void)(el);
+    }
+    if (setStepTwoData) {
+      setStepTwoData((prev) => ({
+        ...prev,
+        [matchLabelToStepTwoData(label)]: el,
+      }));
     }
     setIsOpen(false);
   };

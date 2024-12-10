@@ -13,15 +13,7 @@ const AddFormPage = () => {
         <div className="flex flex-col">
           <Title />
           <div className="m-auto w-[327px] pc:hidden">
-            <Suspense
-              fallback={
-                <div className="text-center text-md text-black-500 pc:text-xl">
-                  잠시만 기다려주세요...
-                </div>
-              }
-            >
-              <AlbaformCreateDropdown />
-            </Suspense>
+            <AlbaformCreateDropdown />
           </div>
           <Suspense
             fallback={

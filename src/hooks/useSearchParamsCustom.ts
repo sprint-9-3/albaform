@@ -1,5 +1,5 @@
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect } from "react";
 
 // key: searchParams의 키, value: searchParams의 값
 export const useSearchParamsCustom = ({
@@ -11,22 +11,21 @@ export const useSearchParamsCustom = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const currentParams = useMemo(
-    () => new URLSearchParams(searchParams.toString()),
-    [searchParams]
-  );
+  const getCurrentParams = () => {
+    return new URLSearchParams(window.location.search);
+  };
 
   const updateURL = useCallback(
     (params: { key: string; value: string | undefined }) => {
+      const updatedParams = getCurrentParams();
       if (params.value !== undefined) {
-        currentParams.set(params.key, params.value);
+        updatedParams.set(params.key, params.value);
       } else {
-        currentParams.delete(params.key);
+        updatedParams.delete(params.key);
       }
-      router.replace(`${pathname}?${currentParams.toString()}`);
+      router.replace(`${pathname}?${updatedParams.toString()}`);
     },
-    [currentParams, router, pathname]
+    [router, pathname]
   );
 
   useEffect(() => {

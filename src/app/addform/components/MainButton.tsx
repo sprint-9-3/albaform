@@ -3,6 +3,7 @@
 import { temporaryDataByStepAtom } from "@/atoms/addFormAtom";
 import SolidButton from "@/components/button/SolidButton";
 import { useAtomValue } from "jotai";
+import { useCallback, useMemo } from "react";
 
 // 추후 form 작업을 하며 zod 타입, react-hook-form 타입이 추가될 예정입니다.
 const MainButton = () => {
@@ -13,7 +14,7 @@ const MainButton = () => {
     { step: "stepThree", data: temporaryDataByStep.stepThree },
   ];
 
-  // 임시 저장 기능 (작성한만큼 로컬스토리지에 저장됩니다.)
+  // 임시 저장 기능 (현재는 단계별로 임시저장이 실행되어야 로컬스토리지에 저장됩니다.)
   const handleTemporarySave = () => {
     temporaryDataArr.forEach((item) => {
       if (item.data && Object.keys(item.data).length > 0) {
