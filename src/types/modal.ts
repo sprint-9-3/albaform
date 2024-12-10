@@ -7,4 +7,5 @@ export enum ModalType {
   GetMyApplicationModal = "GetMyApplicationModal", // 내 지원 내역 모달
   ChangePasswordModal = "ChangePasswordModal", // 비밀번호 변경 모달
   ChangeCEOInfoModal = "ChangeCEOInfoModal", // 사장님 정보 관리 모달
+  ShareSNSModal = "ShareSNSModal", // 공유하기 버튼 눌렀을 때 뜨는 모달
 }

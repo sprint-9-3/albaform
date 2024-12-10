@@ -43,6 +43,10 @@ export default function RootLayout({
           strategy="beforeInteractive"
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`}
         />
+        <Script
+          strategy="beforeInteractive"
+          src="https://developers.kakao.com/sdk/js/kakao.min.js"
+        ></Script>
       </body>
     </html>
   );

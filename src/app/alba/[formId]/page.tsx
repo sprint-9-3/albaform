@@ -17,6 +17,26 @@ type PageProps = {
   params: Promise<{ formId: string }>;
 };
 
+export const generateMetadata = async ({ params }: PageProps) => {
+  const { formId } = await params;
+
+  const data: AlbaformDetailData = await fetchData(formId);
+
+  return {
+    openGraph: {
+      title: data.title,
+      description: data.description,
+      images: [
+        {
+          url: data.imageUrls[0],
+          width: 400,
+          height: 400,
+        },
+      ],
+    },
+  };
+};
+
 const AlbarformDetailPage = async ({ params }: PageProps) => {
   const { formId } = await params;
   const cookie = await cookies();
