@@ -1,21 +1,27 @@
 "use client";
 
 import FormInput from "@/components/input/FormInput";
-import Image from "next/image";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { Path, useForm } from "react-hook-form";
-import { z } from "zod";
-import { applySchema } from "@/schema/apply/applySchema";
 import ErrorText from "@/components/errorText/ErrorText";
-import SolidButton from "@/components/button/SolidButton";
+import ApplyButton from "./ApplyButton";
+import Image from "next/image";
 import { cls } from "@/utils/dynamicTailwinds";
+import { applySchema } from "@/schema/apply/applySchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Path, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useToast } from "@/hooks/useToast";
 
 const ApplyForm = ({ id }: { id: string }) => {
   const [visible, setVisible] = useState(false);
+  const [resumeName, setResumeName] = useState("");
+  const [resumeId, setResumeId] = useState(null);
+  const { addToast } = useToast();
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors, isValid, isSubmitting },
   } = useForm<z.infer<typeof applySchema>>({
     resolver: zodResolver(applySchema),
@@ -30,6 +36,7 @@ const ApplyForm = ({ id }: { id: string }) => {
     },
   });
 
+  //인풋 요소
   const inputArr = [
     {
       label: "이름",
@@ -87,8 +94,69 @@ const ApplyForm = ({ id }: { id: string }) => {
     },
   ];
 
-  const onSubmit = () => {
-    //기능 구현 필요
+  //폼 제출 기능
+  const onSubmit = async (data: z.infer<typeof applySchema>) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/forms/${id}/applications`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...data,
+            resumeName,
+            resumeId,
+          }),
+        }
+      );
+
+      if (!response.ok) throw new Error("지원서 제출 실패");
+
+      addToast("지원서를 성공적으로 제출하였습니다!", "success");
+    } catch (error) {
+      console.error("지원서 제출 오류:", error);
+      addToast("지원서 제출 중 오류가 발생했습니다.", "warning");
+    }
+  };
+
+  //이력서 제출 기능
+  const handleUploadResume = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/resume/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) throw new Error("이력서 업로드 실패");
+
+      const result = await response.json();
+      setResumeName(result.resumeName);
+      setResumeId(result.resumeId);
+      setValue("resumeName", result.resumeName);
+      addToast("이력서 업로드에 성공하였습니다!", "success");
+    } catch (error) {
+      console.error("이력서 업로드 오류:", error);
+      addToast("이력서 업로드 중 오류가 발생했습니다.", "warning");
+    }
+  };
+
+  //임시 저장 기능 (현 상태 그대로 로컬스토리지에 저장)
+  const handleSave = () => {
+    const ApplyFormData = watch();
+
+    localStorage.setItem("ApplyFormData", JSON.stringify(ApplyFormData));
+    addToast("임시 저장 완료", "success");
   };
 
   return (
@@ -123,20 +191,32 @@ const ApplyForm = ({ id }: { id: string }) => {
             />
           )}
           {input.inputStyle === "file" && (
-            <label
-              htmlFor={input.name}
-              className={cls(inputStyle, "text-gray-300")}
-            >
-              {input.placeholder}
-              <input type="file" className="hidden" id={input.name} />
+            <div className={cls(inputStyle, "cursor-pointer text-gray-300")}>
+              <label htmlFor={input.name}>
+                {resumeName ? resumeName : input.placeholder}
+                <input
+                  type="file"
+                  className="hidden"
+                  id={input.name}
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleUploadResume}
+                />
+              </label>
               <Image
-                src="/icon/share-md.svg"
+                src={resumeName ? "/icon/Xcircle-md.svg" : "/icon/share-md.svg"}
                 alt="파일 업로드"
                 width={24}
                 height={24}
                 className="absolute bottom-4 right-3 cursor-pointer"
+                onClick={() => {
+                  if (resumeName) {
+                    setResumeName(""); // 초기화
+                    setResumeId(null); // resumeId도 초기화
+                    setValue("resumeName", ""); // 폼 상태 초기화
+                  }
+                }}
               />
-            </label>
+            </div>
           )}
           <ErrorText error={input.error}>{input.error?.message}</ErrorText>
 
@@ -162,19 +242,11 @@ const ApplyForm = ({ id }: { id: string }) => {
         </div>
       ))}
 
-      <div className="mt-[42px] flex flex-col gap-[10px] pc:mt-[48px] pc:flex-row pc:gap-[8px]">
-        <SolidButton style="outOrange300" type="button">
-          임시 저장
-        </SolidButton>
-
-        <SolidButton
-          disabled={!isValid || isSubmitting}
-          style="orange300"
-          type="submit"
-        >
-          작성 완료
-        </SolidButton>
-      </div>
+      <ApplyButton
+        onSave={handleSave}
+        isSubmitting={isSubmitting}
+        isValid={isValid}
+      />
     </form>
   );
 };
