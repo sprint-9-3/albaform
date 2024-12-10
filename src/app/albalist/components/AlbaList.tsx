@@ -30,7 +30,7 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
   const isRecruiting = params?.isRecruiting ?? undefined;
 
   const fetchMoreData = useCallback(async () => {
-    if (!nextCursor) return;
+    if (!cursor || albaList.length === 0) return;
     setIsLoading(true);
     try {
       const response = await getAlbaList({
@@ -101,8 +101,10 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
           폼 만들기
         </FloatingButton>
       )}
-      {cursor && <div ref={observerRef} style={{ height: "10px" }} />}
-      {isLoading && <CardListSkeleton count={3} />}
+      {cursor && albaList.length > 0 && (
+        <div ref={observerRef} style={{ height: "10px" }} />
+      )}
+      {isLoading && albaList.length > 0 && <CardListSkeleton count={3} />}
     </main>
   );
 };

@@ -37,7 +37,7 @@ const ToastItem = ({ toast, isOutAnimating, onRemove }: ToastItemProps) => {
     <div
       className={`flex w-[347px] items-center justify-between rounded-[14px] px-6 py-3 text-[13px] font-medium opacity-95 pc:h-[84px] pc:w-[1165px] pc:px-10 pc:py-6 pc:text-xl ${toastTypeStyles[toast.type || "info"]} ${
         isOutAnimating ? "animate-toast-out" : "animate-toast-in"
-      } shadow-md shadow-white`}
+      } shadow-md`}
     >
       <div className="flex items-center gap-x-1 pc:gap-x-2">
         <Image

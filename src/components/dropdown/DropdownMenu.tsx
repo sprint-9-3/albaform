@@ -59,7 +59,7 @@ const DropdownMenuTrigger = ({
   }, [setDropdownTrigger]);
 
   const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.preventDefault();
     setDropdownTrigger(!dropdownTrigger);
   };
 
@@ -133,6 +133,7 @@ const DropdownMenuItem = ({
 }) => {
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     onClick(e);
   };
   return (

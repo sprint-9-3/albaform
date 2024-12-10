@@ -7,22 +7,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
 
-// 트리거 요소를 넣으시고, id와 지원하기 및 스크랩 함수도 전달해서 사용해주세요.
 const AlbaPreviewDropdown = ({
   children,
-  onApply,
+  goToApply,
   onScrap,
   id,
 }: {
   children: React.ReactNode;
-  onApply: () => void;
+  goToApply: () => void;
   onScrap: () => void;
-  id?: string;
+  id?: number;
 }) => {
   const itemArr = [
     {
       text: "지원하기",
-      onClick: onApply,
+      onClick: goToApply,
     },
     {
       text: "스크랩",

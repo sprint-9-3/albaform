@@ -4,33 +4,56 @@ import { getDday } from "@/utils/getDday";
 import isPast from "@/utils/isPast";
 import Image from "next/image";
 import AlbaPreviewDropdown from "../dropdown/AlbaPreviewDropdown";
-import kebabIcon from "@/../public/icon/kebab-md.svg";
+import { useRouter } from "next/navigation";
+import instance from "@/lib/instance";
+import { useToast } from "@/hooks/useToast";
 
 interface AlbarPreviewProps {
   info: AlbarformData;
 }
 
 const AlbarPreview = ({ info }: AlbarPreviewProps) => {
+  const router = useRouter();
   const isRecruiting = isPast(info.recruitmentEndDate);
   const dday = getDday(info.recruitmentEndDate);
+  const imageStyle = info.imageUrls[0] ? "object-cover" : "p-10 object-contain";
+  const { addToast } = useToast();
 
   const [formattedStartDate, formattedEndDate] = formatDate(
     info.recruitmentStartDate,
     info.recruitmentEndDate
   );
 
-  const goToApply = () => {};
+  const goToApply = () => {
+    router.push(`/apply/${info.id}`);
+  };
 
-  const handleScrap = () => {};
+  const onScrap = async () => {
+    const result = await instance(
+      `${process.env.NEXT_PUBLIC_API_URL}/forms/${info.id}/scrap`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (result.error) {
+      addToast(`${result.error}`, "warning");
+    } else {
+      addToast("스크랩이 완료되었습니다.", "success");
+    }
+  };
 
   return (
     <div className="h-[390px] w-[327px] pc:h-[536px] pc:w-[477px]">
       <figure className="relative h-[208px] w-full overflow-hidden rounded-[12px] pc:h-[304px]">
         <Image
-          src={info.imageUrls[0]}
+          src={info.imageUrls[0] || "/logo/albaform-with-logo.svg"}
           fill
-          objectFit="cover"
           alt="알바 미리보기 이미지"
+          className={imageStyle}
         />
       </figure>
       <time className="mt-[24px] flex h-[28px] w-full items-center justify-between gap-[8px] text-md pc:h-[38px] pc:text-lg">
@@ -43,9 +66,13 @@ const AlbarPreview = ({ info }: AlbarPreviewProps) => {
         <div className="flex-grow text-black-100">
           {formattedStartDate} ~ {formattedEndDate}
         </div>
-        <AlbaPreviewDropdown onApply={goToApply} onScrap={handleScrap}>
+        <AlbaPreviewDropdown
+          id={info.id}
+          goToApply={goToApply}
+          onScrap={onScrap}
+        >
           <Image
-            src={kebabIcon}
+            src={"/icon/kebab-md.svg"}
             width={24}
             height={24}
             alt="kebab icon"
