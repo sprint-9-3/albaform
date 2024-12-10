@@ -32,10 +32,10 @@ const CloseAlbaformModal = () => {
             type="button"
             onClick={() => {
               closeModal();
-              router.push("/");
+              router.back();
             }}
           >
-            홈으로 가기
+            뒤로 가기
           </SolidButton>
         </div>
       </div>
