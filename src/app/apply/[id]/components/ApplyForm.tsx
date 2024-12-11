@@ -1,21 +1,23 @@
 "use client";
 
-import FormInput from "@/components/input/FormInput";
-import Image from "next/image";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { Path, useForm } from "react-hook-form";
-import { z } from "zod";
+import ApplyFormButton from "./ApplyFormButton";
+import ApplyFormInputList from "./ApplyFormInputList";
+import { ApplyFormInputArr } from "./ApplyFormInputArr";
 import { applySchema } from "@/schema/apply/applySchema";
-import ErrorText from "@/components/errorText/ErrorText";
-import SolidButton from "@/components/button/SolidButton";
-import { cls } from "@/utils/dynamicTailwinds";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { useToast } from "@/hooks/useToast";
+import { applyFormActions } from "../actions/applyFormAction";
+import { uploadResumeAction } from "../actions/uploadResumeAction";
 
 const ApplyForm = ({ id }: { id: string }) => {
-  const [visible, setVisible] = useState(false);
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors, isValid, isSubmitting },
   } = useForm<z.infer<typeof applySchema>>({
     resolver: zodResolver(applySchema),
@@ -25,156 +27,82 @@ const ApplyForm = ({ id }: { id: string }) => {
       phoneNumber: "",
       experienceMonths: "",
       resumeName: "",
+      resumeId: "",
       introduction: "",
       password: "",
     },
   });
+  const [visible, setVisible] = useState(false);
+  const { addToast } = useToast();
 
-  const inputArr = [
-    {
-      label: "이름",
-      name: "name",
-      type: "text",
-      placeholder: "이름을 입력해주세요.",
-      error: errors.name,
-      register: register("name"),
-      inputStyle: "basic",
-    },
-    {
-      label: "연락처",
-      name: "phoneNumber",
-      type: "tel",
-      placeholder: "숫자만 입력해주세요.",
-      error: errors.phoneNumber,
-      register: register("phoneNumber"),
-      inputStyle: "basic",
-    },
-    {
-      label: "경력(개월 수)",
-      name: "experienceMonths",
-      type: "number",
-      placeholder: "숫자만 입력해주세요.",
-      error: errors.experienceMonths,
-      register: register("experienceMonths"),
-      inputStyle: "basic",
-    },
-    {
-      label: "이력서",
-      name: "resumeName",
-      type: "file",
-      placeholder: "파일 업로드하기",
-      error: errors.resumeName,
-      register: register("resumeName"),
-      inputStyle: "file",
-    },
-    {
-      label: "자기 소개",
-      name: "introduction",
-      type: "text",
-      placeholder: "최대 200자까지 입력 가능합니다.",
-      error: errors.introduction,
-      register: register("introduction"),
-      inputStyle: "textarea",
-    },
-    {
-      label: "비밀번호",
-      name: "password",
-      type: visible ? "text" : "password",
-      placeholder: "비밀번호를 입력해주세요.",
-      error: errors.password,
-      register: register("password"),
-      inputStyle: "basic",
-    },
-  ];
+  //인풋 요소
+  const inputArr = ApplyFormInputArr({ register, errors, visible });
 
-  const onSubmit = () => {
-    //기능 구현 필요
+  //폼 제출 기능
+  const onSubmit = async (data: z.infer<typeof applySchema>) => {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value || "");
+    });
+
+    try {
+      await applyFormActions(formData, id);
+
+      addToast("지원서를 성공적으로 제출하였습니다", "success");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "지원서 제출 중 알 수 없는 오류가 발생했습니다.";
+
+      console.error("지원서 제출 오류:", error);
+      addToast(errorMessage, "warning");
+    }
+  };
+
+  //이력서 제출 기능
+  const handleUploadResume = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const result = await uploadResumeAction(file);
+
+      setValue("resumeName", result.resumeName);
+      setValue("resumeId", result.resumeId.toString());
+
+      addToast("이력서 업로드에 성공하였습니다", "success");
+    } catch (error) {
+      console.error("이력서 업로드 오류:", error);
+      addToast("이력서 업로드 중 오류가 발생했습니다.", "warning");
+    }
+  };
+
+  //임시 저장 기능 (현 상태 그대로 로컬스토리지에 저장)
+  const handleSave = () => {
+    const ApplyFormData = watch();
+
+    localStorage.setItem("ApplyFormData", JSON.stringify(ApplyFormData));
+    addToast("임시 저장 완료", "success");
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-[23px] pc:mt-[36px]">
-      {inputArr.map((input) => (
-        <div key={input.name} className="relative flex flex-col">
-          <label htmlFor={input.name} className={labelStyle}>
-            {input.label}
-            <span className="text-red"> *</span>
-          </label>
-          {input.inputStyle === "basic" && (
-            <FormInput
-              id={input.name}
-              name={input.name as Path<z.infer<typeof applySchema>>}
-              type={input.type}
-              register={register}
-              error={input.error}
-              placeholder={input.placeholder}
-              className={inputStyle}
-            />
-          )}
-          {input.inputStyle === "textarea" && (
-            <textarea
-              id={input.name}
-              {...register("introduction")}
-              className={cls(
-                "h-[132px] resize-none appearance-none focus:outline-none",
-                inputStyle,
-                errors.introduction ? "border-red" : ""
-              )}
-              placeholder="최대 200자까지 입력 가능합니다."
-            />
-          )}
-          {input.inputStyle === "file" && (
-            <label
-              htmlFor={input.name}
-              className={cls(inputStyle, "text-gray-300")}
-            >
-              {input.placeholder}
-              <input type="file" className="hidden" id={input.name} />
-              <Image
-                src="/icon/share-md.svg"
-                alt="파일 업로드"
-                width={24}
-                height={24}
-                className="absolute bottom-4 right-3 cursor-pointer"
-              />
-            </label>
-          )}
-          <ErrorText error={input.error}>{input.error?.message}</ErrorText>
+      <ApplyFormInputList
+        inputArr={inputArr}
+        register={register}
+        errors={errors}
+        watch={watch}
+        setValue={setValue}
+        setVisible={setVisible}
+        handleUploadResume={handleUploadResume}
+      />
 
-          {input.name === "password" && (
-            <Image
-              onClick={() => setVisible(!visible)}
-              src={
-                input.type === "text"
-                  ? "/icon/visible.svg"
-                  : "/icon/non-visible.svg"
-              }
-              alt="비밀번호 보기"
-              width={24}
-              height={24}
-              className="absolute bottom-4 right-3 cursor-pointer"
-            />
-          )}
-          {input.name === "password" && (
-            <p className="absolute bottom-[-20px] left-0 text-xs text-gray-400 pc:bottom-[-26px] pc:text-md">
-              *지원내역 확인에 사용됩니다.
-            </p>
-          )}
-        </div>
-      ))}
-
-      <div className="mt-[42px] flex flex-col gap-[10px] pc:mt-[48px] pc:flex-row pc:gap-[8px]">
-        <SolidButton style="outOrange300" type="button">
-          임시 저장
-        </SolidButton>
-
-        <SolidButton
-          disabled={!isValid || isSubmitting}
-          style="orange300"
-          type="submit"
-        >
-          작성 완료
-        </SolidButton>
-      </div>
+      <ApplyFormButton
+        onSave={handleSave}
+        isSubmitting={isSubmitting}
+        isValid={isValid}
+      />
     </form>
   );
 };
