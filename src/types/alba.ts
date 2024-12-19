@@ -1,4 +1,5 @@
 export interface AppliedAlbaData {
+  id: number;
   updatedAt: string;
   createdAt: string;
   status: string;
