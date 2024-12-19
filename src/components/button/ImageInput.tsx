@@ -14,11 +14,13 @@ interface ImageInputProps {
   limit?: number;
   onImageChange: (files: File[]) => void;
   initialImage?: File[];
+  sizeCheck?: boolean;
 }
 
 const ImageInput = ({
   size = "small",
   limit = 1,
+  sizeCheck = false,
   onImageChange,
   initialImage,
 }: ImageInputProps) => {
@@ -76,11 +78,13 @@ const ImageInput = ({
         }
 
         // 이미지 크기 확인
-        const imageCheck = await checkImageSize(file);
-        if (!imageCheck) {
-          isError = true;
-          setError("이미지 크기는 최소 1560 x 560이어야 합니다.");
-          continue;
+        if (sizeCheck) {
+          const imageCheck = await checkImageSize(file);
+          if (!imageCheck) {
+            isError = true;
+            setError("이미지 크기는 최소 1560 x 560이어야 합니다.");
+            continue;
+          }
         }
 
         const imageUrl = URL.createObjectURL(file);

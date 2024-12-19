@@ -30,7 +30,7 @@ const postComment = async ({
 
   return {
     status: response.status,
-    data: response.data,
+    data: response,
   };
 };
 

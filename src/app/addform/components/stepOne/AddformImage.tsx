@@ -49,6 +49,7 @@ const AddformImage = () => {
         onImageChange={setCurrentImageList}
         initialImage={currentImageList}
         limit={3}
+        sizeCheck={true}
       />
     </div>
   );

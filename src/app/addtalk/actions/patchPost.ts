@@ -29,7 +29,7 @@ const patchPost = async (talkId: number, data: data) => {
 
   return {
     status: response.status,
-    data: response.data,
+    data: response,
   };
 };
 

@@ -18,13 +18,11 @@ const getComments = async (id: number, page: number, pageSize: number) => {
       };
     }
 
-    const { data, totalItemCount, currentPage, totalPages } = response.data;
-
     return {
-      data, // 댓글 리스트
-      totalItemCount, // 전체 댓글 수
-      currentPage, // 현재 페이지
-      totalPages, // 전체 페이지 수
+      data: response.data, // 댓글 리스트
+      totalItemCount: response.totalItemCount, // 전체 댓글 수
+      currentPage: response.currentPage, // 현재 페이지
+      totalPages: response.totalPages, // 전체 페이지 수
     };
   } catch (error) {
     console.error("댓글 목록을 조회하는데 실패했습니다.", error);

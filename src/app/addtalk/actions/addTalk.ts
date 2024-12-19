@@ -26,7 +26,7 @@ const addTalk = async (data: data) => {
 
   return {
     status: response.status,
-    data: response.data,
+    data: response,
   };
 };
 
