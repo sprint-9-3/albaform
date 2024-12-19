@@ -8,6 +8,7 @@ interface SimpleRequirementsProps {
   workEndTime: string;
   workDays: string[];
   hourlyWage: number;
+  isNegotiableWorkDays: boolean;
 }
 
 const SimpleRequirements = ({ info }: { info: SimpleRequirementsProps }) => {
@@ -31,7 +32,12 @@ const SimpleRequirements = ({ info }: { info: SimpleRequirementsProps }) => {
       title: "기간",
       content: `${formaatedStartDate.slice(2)}~${formaatedEndDate.slice(2)}`,
     },
-    { id: 2, href: "/icon/calendar-lg.svg", title: "요일", content: workdays },
+    {
+      id: 2,
+      href: "/icon/calendar-lg.svg",
+      title: info.isNegotiableWorkDays === true ? "요일(협의가능)" : "요일",
+      content: workdays === "" ? "협의가능" : workdays,
+    },
     {
       id: 3,
       href: "/icon/clock-md.svg",

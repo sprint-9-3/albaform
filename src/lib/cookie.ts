@@ -57,7 +57,8 @@ export const deleteCookie = async (isLogout: boolean) => {
   const cookieStore = await cookies();
 
   if (isLogout) {
-    const cookieArr = ["accessToken", "refreshToken", "role"];
+    const cookieArr = ["accessToken", "refreshToken", "role", "id"];
     await Promise.all(cookieArr.map((cookie) => cookieStore.delete(cookie)));
+    // 로컬 스토리지에 isLogin도 삭제되어야 함. 근데 서버에서 실행되는 함수라 안됨 -> 12.19 정준영
   }
 };

@@ -1,11 +1,25 @@
 "use client";
 
-import { useSidebarState } from "@/hooks/useSidebarState";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSidebarState } from "@/hooks/useSidebarState";
+import { useToast } from "@/hooks/useToast";
+import { deleteCookie } from "@/lib/cookie";
 
 const Sidebar = () => {
+  const router = useRouter();
   const { isOpen, setIsOpen } = useSidebarState();
+  const { addToast } = useToast();
+
+  const handleLogout = async () => {
+    await deleteCookie(true);
+    addToast("로그아웃 되었습니다.", "info");
+    localStorage.removeItem("isLogin");
+    setIsOpen(false);
+    router.push("/");
+    window.location.reload();
+  };
 
   if (!isOpen) return null;
 
@@ -40,20 +54,27 @@ const Sidebar = () => {
                   alt="마이페이지 이동"
                 />
               </div>
-              <span className="text-lg text-black-400 pc:text-xl">
+              <span className="text-lg text-black-400 hover:text-orange-300 pc:text-xl">
                 마이페이지
               </span>
             </Link>
           </li>
-          <li className="flex h-[100px] w-full items-center gap-[16px] px-[16px] py-[24px]">
-            <Image
-              src="/icon/logout-orange.svg"
-              width={36}
-              height={36}
-              alt="로그아웃"
-              className="text-orange-100"
-            />
-            <span className="text-lg text-black-400 pc:text-xl">로그아웃</span>
+          <li>
+            <button
+              onClick={handleLogout}
+              className="flex h-[100px] w-full items-center gap-[16px] px-[16px] py-[24px]"
+            >
+              <Image
+                src="/icon/logout-orange.svg"
+                width={36}
+                height={36}
+                alt="로그아웃"
+                className="text-orange-100"
+              />
+              <span className="text-lg text-black-400 hover:text-orange-300 pc:text-xl">
+                로그아웃
+              </span>
+            </button>
           </li>
         </ul>
       </nav>

@@ -33,7 +33,7 @@ const ScrapButton = ({
     } else {
       setIsFilled(true);
       addToast("스크랩이 완료되었습니다.", "success");
-      await instance(
+      const res = await instance(
         `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/scrap`,
         {
           method: "POST",
@@ -42,6 +42,7 @@ const ScrapButton = ({
           },
         }
       );
+      console.log("스크랩 완료 후 데이터", res.data);
     }
   };
 
