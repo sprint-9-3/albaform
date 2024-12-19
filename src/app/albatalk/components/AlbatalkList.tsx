@@ -8,6 +8,7 @@ import PostCardListSkeleton from "./PostCardSkeleton";
 import { useState } from "react";
 import { getArticles } from "../getArticles";
 import FloatingButton from "@/components/button/FloatingButton";
+import { useRouter } from "next/navigation";
 
 interface AlbatalkResponse {
   data: PostCardProps[];
@@ -29,6 +30,11 @@ const AlbatalkList = ({
   const [cursor, setCursor] = useState(initialCursor);
   const [isLoading, setIsLoading] = useState(false);
   const isLogin = localStorage.getItem("isLogin");
+  const router = useRouter();
+
+  const goToAddTalk = () => {
+    router.push("/addtalk");
+  };
 
   const fetchMoreData = async () => {
     if (isLoading) return;
@@ -77,9 +83,11 @@ const AlbatalkList = ({
       {isLoading && <PostCardListSkeleton count={3} />}
 
       {isLogin && (
-        <div className="fixed bottom-20 right-10">
-          <FloatingButton icon="/icon/writing.svg" href="/addtalk" />
-        </div>
+        <FloatingButton
+          icon="/icon/writing.svg"
+          onClick={goToAddTalk}
+          className="fixed bottom-20 right-10"
+        />
       )}
     </div>
   );
