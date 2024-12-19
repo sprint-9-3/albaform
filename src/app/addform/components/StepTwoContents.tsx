@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { z } from "zod";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import RequirementPicker from "@/components/picker/RequirementPicker";
 import {
   stepActiveAtomFamily,
@@ -31,14 +31,11 @@ const StepTwoContents = () => {
     };
   });
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fields = [
-    "numberOfPositions",
-    "gender",
-    "education",
-    "age",
-    "preferred",
-  ] as const;
+  const fields = useMemo(
+    () =>
+      ["numberOfPositions", "gender", "education", "age", "preferred"] as const,
+    []
+  );
 
   const inputArr = [
     {
@@ -80,8 +77,7 @@ const StepTwoContents = () => {
         setValue(field, formattedData[field]);
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stepTwoData, setValue]);
+  }, [stepTwoData, setValue, fields]);
 
   // 임시 데이터 atom 업데이트
   useEffect(() => {
@@ -103,8 +99,7 @@ const StepTwoContents = () => {
       setStepTwoData(parsedData);
     }
     setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setValue, setStepTwoData]);
+  }, [setValue, setStepTwoData, fields]);
 
   if (loading) {
     return <LoadingSkeleton count={5} />;

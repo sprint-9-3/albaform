@@ -1,10 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { addFormSchema } from "@/schema/addForm/addFormSchema";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useAtom, useSetAtom } from "jotai";
+import {
+  addFormIsSubmittingAtom,
+  addFormSubmitDisabledAtom,
+  stepActiveAtomFamily,
+} from "@/atoms/addFormAtomStore";
+import { useToast } from "./useToast";
+import { formatDate } from "@/utils/formatDate";
+import { base64ToFile } from "@/utils/imageFileConvert";
 
+// addform 전체 관리
 export const useAddForm = () => {
   const methods = useForm<z.infer<typeof addFormSchema>>({
     resolver: zodResolver(addFormSchema),
@@ -56,4 +65,133 @@ export const useAddForm = () => {
   }, [methods]);
 
   return { methods, loadAllTempData };
+};
+
+// 등록 버튼 활성화 여부, 등록 중 여부
+export const useValidateForm = (
+  methods: UseFormReturn<z.infer<typeof addFormSchema>>
+) => {
+  const [submitDisabled, setSubmitDisabled] = useAtom(
+    addFormSubmitDisabledAtom
+  );
+  const [addFormIsSubmitting, setAddFormIsSubmitting] = useAtom(
+    addFormIsSubmittingAtom
+  );
+
+  const values = methods.getValues();
+
+  // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 미동작으로 값들이 모두 채워지면 활성화)
+  useEffect(() => {
+    const subscription = methods.watch((value) => {
+      if (!value) return;
+
+      const hourlyWage = values.hourlyWage;
+      const workDays = values.workDays;
+
+      const isComplete = Object.values(values).every((value) => {
+        if (value === hourlyWage) {
+          return value > 0;
+        }
+
+        if (value === workDays) {
+          return workDays.length > 0;
+        }
+
+        if (typeof value === "number") {
+          return value !== undefined;
+        }
+
+        const result = value !== undefined && value !== "";
+
+        return result;
+      });
+
+      setSubmitDisabled(!isComplete);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [setSubmitDisabled, values, methods]);
+
+  // 등록 중 여부
+  useEffect(() => {
+    if (methods.formState.isSubmitting) {
+      setAddFormIsSubmitting(true);
+    } else {
+      setAddFormIsSubmitting(false);
+    }
+  }, [methods.formState.isSubmitting, setAddFormIsSubmitting]);
+
+  return { submitDisabled, addFormIsSubmitting };
+};
+
+interface UseAddFormInitProps {
+  albaForm?:
+    | z.infer<typeof addFormSchema>
+    | {
+        status: number;
+        message: string;
+      };
+}
+
+// 알바폼 수정하기 초기화
+export const useAddFormInit = ({ albaForm }: UseAddFormInitProps) => {
+  const isInitialized = useRef(false);
+  const setStepOneActive = useSetAtom(stepActiveAtomFamily("stepOne"));
+  const setStepTwoActive = useSetAtom(stepActiveAtomFamily("stepTwo"));
+  const setStepThreeActive = useSetAtom(stepActiveAtomFamily("stepThree"));
+  const { addToast } = useToast();
+
+  const initializeAddForm = useCallback(
+    (
+      methods: UseFormReturn<z.infer<typeof addFormSchema>>,
+      setCurrentImageList: (files: File[]) => void
+    ) => {
+      if (albaForm && !isInitialized.current) {
+        if ("status" in albaForm) {
+          addToast(albaForm.message, "warning");
+          return;
+        } else {
+          const workDates = formatDate(
+            albaForm.workStartDate,
+            albaForm.workEndDate,
+            true
+          );
+
+          const recruitmentDates = formatDate(
+            albaForm.recruitmentStartDate,
+            albaForm.recruitmentEndDate,
+            true
+          );
+
+          methods.reset({
+            ...albaForm,
+            workStartDate: workDates[0],
+            workEndDate: workDates[1],
+            recruitmentStartDate: recruitmentDates[0],
+            recruitmentEndDate: recruitmentDates[1],
+          });
+
+          setStepOneActive(true);
+          setStepTwoActive(true);
+          setStepThreeActive(true);
+
+          if (albaForm.imageUrls && albaForm.imageUrls.length > 0) {
+            const convertToFile = async () => {
+              const files = await Promise.all(
+                albaForm.imageUrls!.map((url) =>
+                  base64ToFile(url, "serverImage")
+                )
+              );
+              setCurrentImageList(files);
+            };
+            convertToFile();
+          }
+          isInitialized.current = true;
+        }
+      }
+    },
+    [addToast, setStepOneActive, setStepTwoActive, setStepThreeActive, albaForm]
+  );
+
+  return { initializeAddForm };
 };

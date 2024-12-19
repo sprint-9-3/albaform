@@ -7,7 +7,7 @@ import {
 } from "@/atoms/addFormAtomStore";
 import { useSetAtom } from "jotai";
 import Location from "./stepThree/Location";
-import RecruitmentDate from "./stepThree/RecruitmentDate";
+import RecruitmentDate from "./stepThree/WorkDay";
 import WorkingTime from "./stepThree/WorkingTime";
 import WorkDate from "./stepThree/WorkDate";
 import HourlyWage from "./stepThree/HourlyWage";
@@ -22,18 +22,21 @@ const StepThreeContents = () => {
   const setStepActive = useSetAtom(stepActiveAtomFamily("stepThree"));
   const [loading, setLoading] = useState(true);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fields = [
-    "location",
-    "workStartDate",
-    "workEndDate",
-    "workStartTime",
-    "workEndTime",
-    "workDays",
-    "hourlyWage",
-    "isPublic",
-    "isNegotiableWorkDays",
-  ] as const;
+  const fields = useMemo(
+    () =>
+      [
+        "location",
+        "workStartDate",
+        "workEndDate",
+        "workStartTime",
+        "workEndTime",
+        "workDays",
+        "hourlyWage",
+        "isPublic",
+        "isNegotiableWorkDays",
+      ] as const,
+    []
+  );
 
   const stepThreeData = useMemo(() => {
     return fields.reduce(
@@ -77,8 +80,7 @@ const StepThreeContents = () => {
       });
     }
     setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setValue]);
+  }, [setValue, fields]);
 
   if (loading) {
     return <LoadingSkeleton count={5} />;

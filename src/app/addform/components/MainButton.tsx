@@ -1,23 +1,22 @@
 "use client";
 
 import {
-  addFormIsSubmittingAtom,
-  addFormSubmitDisabledAtom,
   addFromSubmitTriggerAtom,
   temporaryDataByStepAtom,
 } from "@/atoms/addFormAtomStore";
 import SolidButton from "@/components/button/SolidButton";
+import { useAddForm } from "@/hooks/useAddForm";
+import { useValidateForm } from "@/hooks/useAddForm";
 import { useToast } from "@/hooks/useToast";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useParams } from "next/navigation";
 
 const MainButton = () => {
   const temporaryDataByStep = useAtomValue(temporaryDataByStepAtom);
-  const isDisabled = useAtomValue(addFormSubmitDisabledAtom);
-  const isSubmitting = useAtomValue(addFormIsSubmittingAtom);
+  const { methods } = useAddForm();
+  const { submitDisabled, addFormIsSubmitting } = useValidateForm(methods);
   const setAddFormSubmitTrigger = useSetAtom(addFromSubmitTriggerAtom);
   const params = useParams();
-
   const { addToast } = useToast();
 
   const temporaryDataArr = [
@@ -47,9 +46,9 @@ const MainButton = () => {
             type="submit"
             style="orange300"
             onClick={() => setAddFormSubmitTrigger(true)}
-            disabled={isDisabled || isSubmitting}
+            disabled={submitDisabled || addFormIsSubmitting}
           >
-            {isSubmitting ? "등록중..." : "등록하기"}
+            {addFormIsSubmitting ? "등록중..." : "등록하기"}
           </SolidButton>
         </>
       ) : (
@@ -57,9 +56,9 @@ const MainButton = () => {
           type="submit"
           style="orange300"
           onClick={() => setAddFormSubmitTrigger(true)}
-          disabled={isDisabled || isSubmitting}
+          disabled={submitDisabled || addFormIsSubmitting}
         >
-          {isSubmitting ? "수정중..." : "수정하기"}
+          {addFormIsSubmitting ? "수정중..." : "수정하기"}
         </SolidButton>
       )}
     </div>

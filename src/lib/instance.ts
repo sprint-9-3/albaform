@@ -19,37 +19,44 @@ const instance = async (url: string, options: RequestInit = {}) => {
 
   if (response.status === 401) {
     const refreshToken = cookieStore.get("refreshToken")?.value;
+    const refreshResponse = await fetch("http://localhost:3000/api/refresh", {
+      method: "POST",
+      body: JSON.stringify({ refreshToken }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-    if (refreshToken) {
-      const refreshResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
-        {
-          method: "POST",
-          body: JSON.stringify({ refreshToken }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+    if (refreshResponse.ok) {
+      const tokenData = await refreshResponse.json();
+      const { accessToken: newAccessToken } = tokenData;
 
-      if (refreshResponse.ok) {
-        const tokenData = await refreshResponse.json();
-        const { accessToken: newAccessToken } = tokenData;
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${newAccessToken}`,
+      };
 
-        cookieStore.set("accessToken", newAccessToken);
-
-        options.headers = {
-          ...options.headers,
-          Authorization: `Bearer ${newAccessToken}`,
-        };
-
-        response = await fetch(url, { ...options });
-      } else {
+      response = await fetch(url, { ...options });
+    } else {
+      if (refreshResponse.status !== 500) {
         console.error("토큰갱신 실패");
         await deleteCookie(true);
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("isLogin");
+        }
         return {
           status: 401,
           error: "장시간 미활동으로 인해 로그인이 해제되었습니다.",
+        };
+      } else {
+        console.error(
+          "리프레시토큰 요청 실패",
+          refreshResponse.status,
+          refreshResponse.statusText
+        );
+        return {
+          status: 500,
+          error: "오류가 발생하여 요청이 실패했습니다.",
         };
       }
     }

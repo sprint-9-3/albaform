@@ -69,7 +69,7 @@ const PickableList = <
         <li
           key={el}
           value={el}
-          className="hover:text-orange-100"
+          className="cursor-pointer hover:text-orange-100"
           onClick={() => handleClick(String(el))}
         >
           {el}

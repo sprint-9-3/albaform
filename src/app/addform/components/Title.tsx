@@ -10,11 +10,6 @@ const Title = () => {
   const handleCancel = () => {
     const isConfirm = confirm("작성을 취소하시겠습니까?"); // 모달 변경 필요
     if (isConfirm) {
-      const keys = ["stepOne", "stepTwo", "stepThree"];
-
-      keys.forEach((key) => {
-        localStorage.removeItem(key);
-      });
       router.push("/albalist");
     }
   };

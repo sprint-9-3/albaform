@@ -48,6 +48,7 @@ export const createCookie = async (data: CookieData) => {
     value: data.value,
     secure: true,
     httpOnly: true,
+    sameSite: "lax",
     maxAge: data.maxAge,
   });
 };
@@ -57,7 +58,7 @@ export const deleteCookie = async (isLogout: boolean) => {
   const cookieStore = await cookies();
 
   if (isLogout) {
-    const cookieArr = ["accessToken", "refreshToken", "role"];
+    const cookieArr = ["accessToken", "refreshToken", "role", "id"];
     await Promise.all(cookieArr.map((cookie) => cookieStore.delete(cookie)));
   }
 };
