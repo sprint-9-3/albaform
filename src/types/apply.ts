@@ -13,4 +13,5 @@ export interface ApplyFormInputListProps {
   watch: UseFormWatch<z.infer<typeof applySchema>>;
   setValue: UseFormSetValue<z.infer<typeof applySchema>>;
   handleUploadResume: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  loading: boolean;
 }
