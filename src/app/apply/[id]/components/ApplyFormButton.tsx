@@ -4,12 +4,14 @@ interface ApplyButtonProps {
   onSave: () => void;
   isSubmitting: boolean;
   isValid: boolean;
+  loading: boolean;
 }
 
 const ApplyFormButton = ({
   onSave,
   isSubmitting,
   isValid,
+  loading,
 }: ApplyButtonProps) => {
   return (
     <div className="mt-[62px] flex flex-col gap-[10px] pc:mt-[88px] pc:flex-row pc:gap-[8px]">
@@ -27,7 +29,7 @@ const ApplyFormButton = ({
         type="submit"
         disabled={!isValid || isSubmitting}
       >
-        작성 완료
+        {loading ? "로딩 중..." : "작성 완료"}
       </SolidButton>
     </div>
   );

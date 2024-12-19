@@ -43,6 +43,6 @@ export const applyFormActions = async (formData: FormData, formId: string) => {
 
   return {
     status: response.status,
-    data: response.data,
+    id: response.id,
   };
 };
