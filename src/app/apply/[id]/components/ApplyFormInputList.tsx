@@ -14,6 +14,7 @@ const ApplyFormInputList = ({
   watch,
   setValue,
   handleUploadResume,
+  loading,
 }: ApplyFormInputListProps) => {
   const resumeName = watch("resumeName");
   const resumeId = watch("resumeId");
@@ -82,7 +83,7 @@ const ApplyFormInputList = ({
         <div key={input.name} className="relative flex flex-col">
           <label htmlFor={input.name} className={labelStyle}>
             {input.label}
-            <span className="text-red"> *</span>
+            <span className="text-orange-300"> *</span>
           </label>
           {input.inputStyle === "basic" && (
             <FormInput
@@ -108,39 +109,49 @@ const ApplyFormInputList = ({
             />
           )}
           {input.inputStyle === "file" && (
-            <div className={cls(inputStyle, "cursor-pointer text-gray-300")}>
-              <label htmlFor={input.name}>
-                {resumeName ? resumeName : input.placeholder}
-                <input
-                  type="file"
-                  className="hidden"
-                  id={input.name}
-                  {...register("resumeName")}
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleUploadResume}
-                />
-                <input
-                  value={resumeId}
-                  {...register("resumeId")}
-                  hidden
-                  readOnly
-                />
-              </label>
-
+            <label
+              className={cls(
+                inputStyle,
+                "flex cursor-pointer items-center",
+                resumeName ? "text-black-400" : "text-gray-300"
+              )}
+            >
+              <div className="inline-block overflow-hidden text-ellipsis whitespace-nowrap">
+                {loading
+                  ? "로딩 중..."
+                  : resumeName
+                    ? resumeName
+                    : input.placeholder}
+              </div>
+              <input
+                type="file"
+                hidden
+                id={input.name}
+                {...register("resumeName")}
+                accept=".pdf,.doc,.docx"
+                onChange={handleUploadResume}
+              />
+              <input
+                value={resumeId}
+                {...register("resumeId")}
+                hidden
+                readOnly
+              />
               <Image
                 src={resumeName ? "/icon/Xcircle-md.svg" : "/icon/share-md.svg"}
                 alt="파일 업로드"
                 width={24}
                 height={24}
                 className="absolute bottom-4 right-3 cursor-pointer"
-                onClick={() => {
+                onClick={(e) => {
                   if (resumeName) {
+                    e.preventDefault();
                     setValue("resumeName", "");
                     setValue("resumeId", "");
                   }
                 }}
               />
-            </div>
+            </label>
           )}
           <ErrorText error={input.error}>{input.error?.message}</ErrorText>
 
