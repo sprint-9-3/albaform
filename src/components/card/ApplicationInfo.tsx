@@ -2,6 +2,7 @@ import { AppliedAlbaData } from "@/types/alba";
 import getCurrentTime from "@/utils/getCurrentTime";
 import isPast from "@/utils/isPast";
 import Image from "next/image";
+import ViewResumeButton from "../button/ViewResumeButton";
 
 interface ApplicationInfoProps {
   info: AppliedAlbaData;
@@ -26,7 +27,7 @@ const ApplicationInfo = ({ info }: ApplicationInfoProps) => {
         <span className="ml-2 flex-grow border-l border-l-line-100 px-2">
           {createdTime}
         </span>
-        <button className="text-black-400 underline">이력서 보기</button>
+        <ViewResumeButton id={info.id} />
       </div>
 
       <div className="flex items-center gap-2">
@@ -55,7 +56,7 @@ const ApplicationInfo = ({ info }: ApplicationInfoProps) => {
           {hireStatus}
         </li>
         <li className="rounded-md border border-orange-100 bg-orange-50 px-2 py-1 text-orange-300">
-          {isRecruiting ? "모집중" : "마감"}
+          {isRecruiting ? "마감" : "모집중"}
         </li>
       </ul>
     </div>

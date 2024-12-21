@@ -7,18 +7,20 @@ interface FloatingButtonProps {
   icon: string;
   color?: "orange300" | "oldLace50" | "white";
   children?: string;
-  href: string;
+  type?: "link" | "button";
+  onClick?: () => void;
+  href?: string;
   className?: string;
-  [key: string]: any;
 }
 
 const FloatingButton = ({
   icon,
   color = "orange300",
   children,
+  type = "link",
+  onClick,
   href,
   className,
-  ...rest
 }: FloatingButtonProps) => {
   const iconTextClass =
     "w-full max-w-[120px] h-full max-h-[54px] text-base font-semibold pc:max-w-[140px] pc:max-h-16 pc:text-xl";
@@ -48,21 +50,36 @@ const FloatingButton = ({
   };
 
   // 최종 클래스
-  const finalClassName = `flex items-center justify-center rounded-full ${children ? "gap-x-0.5" : ""} ${colorClass[color]} transition-transform duration-200 ease-out ${hoverClass[color]} ${activeClass[color]} ${
+  const finalClassName = `shadow-md flex items-center justify-center rounded-full ${children ? "gap-x-0.5" : ""} ${colorClass[color]} transition-transform duration-200 ease-out ${hoverClass[color]} ${activeClass[color]} ${
     children ? iconTextClass : noTextClass
   } ${className}`;
 
+  if (type === "link") {
+    return (
+      <Link href={href || "#"} className={finalClassName}>
+        <Image
+          src={icon}
+          alt="buttonIcon"
+          width={24}
+          height={24}
+          className="pc:size-9"
+        />
+        {children && <span>{children}</span>}
+      </Link>
+    );
+  }
+
   return (
-    <Link href={href} className={finalClassName} {...rest}>
+    <button type="button" onClick={onClick} className={finalClassName}>
       <Image
         src={icon}
         alt="buttonIcon"
         width={24}
         height={24}
-        className="pc:h-9 pc:w-9"
+        className="pc:size-9"
       />
       {children && <span>{children}</span>}
-    </Link>
+    </button>
   );
 };
 

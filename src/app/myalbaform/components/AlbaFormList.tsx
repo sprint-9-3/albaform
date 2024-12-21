@@ -6,20 +6,20 @@ import EmptyState from "./EmptyState";
 import FloatingButton from "@/components/button/FloatingButton";
 import plusIcon from "@/../public/icon/plus-md.svg";
 import useInfinityScroll from "@/hooks/useInfinityScroll";
-import { AlbaListFetcherProps } from "./AlbaListFetcher";
-import CardListSkeleton from "./CardListSkeleton";
+import SkeletonCardList from "./SkeletonCardList";
 import { useCallback, useState } from "react";
-import { getAlbaList } from "../getAlbaList";
+import { getAlbaFormList } from "../getAlbaFormList";
+import { AlbaFormListParams } from "../page";
 
-interface AlbaListProps {
+interface Props {
   list: AlbarformData[];
   nextCursor: number | null;
   role: string;
-  params?: AlbaListFetcherProps["params"];
+  params?: AlbaFormListParams;
 }
 
-const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
-  const [albaList, setAlbaList] = useState(list);
+const AlbaFormList = ({ list, nextCursor, role, params }: Props) => {
+  const [formList, setFormList] = useState(list);
   const [cursor, setCursor] = useState(nextCursor);
   const [isLoading, setIsLoading] = useState(false);
   const orderBy = params?.orderBy ?? "mostRecent";
@@ -28,27 +28,21 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
   const isRecruiting = params?.isRecruiting ?? undefined;
 
   const fetchMoreData = useCallback(async () => {
-    if (!cursor || albaList.length === 0) return;
+    if (!cursor || formList.length === 0) return;
     setIsLoading(true);
     try {
-      const response = await getAlbaList({
+      const response = await getAlbaFormList({
         orderBy,
         limit: 6,
         cursor,
         keyword,
+        isPublic,
         isRecruiting,
       });
 
-      const filteredData =
-        isPublic !== undefined
-          ? response.data.filter(
-              (item: AlbarformData) => item.isPublic === isPublic
-            )
-          : response.data;
-
-      setAlbaList((prevList) => [
+      setFormList((prevList) => [
         ...prevList,
-        ...filteredData.filter(
+        ...response.data.filter(
           (newList: AlbarformData) =>
             !prevList.some((card) => card.id === newList.id)
         ),
@@ -60,7 +54,7 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
     } finally {
       setIsLoading(false);
     }
-  }, [orderBy, cursor, albaList.length, keyword, isRecruiting, isPublic]);
+  }, [orderBy, cursor, formList.length, keyword, isRecruiting, isPublic]);
 
   // 무한 스크롤 Ref
   const observerRef = useInfinityScroll({ fetchMoreData });
@@ -68,9 +62,9 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
   return (
     <main className="min-h-screen">
       <section className="mx-auto mt-[9px] w-[327px] pc:mt-14 pc:w-[1479px] tablet:mt-[14px] tablet:w-[670px]">
-        {albaList.length > 0 ? (
+        {formList.length > 0 ? (
           <ul className="flex flex-col gap-y-8 pc:flex-row pc:flex-wrap pc:gap-x-6 pc:gap-y-16 tablet:flex-row tablet:flex-wrap tablet:gap-x-4 tablet:gap-y-12">
-            {albaList.map((item: AlbarformData) => (
+            {formList.map((item: AlbarformData) => (
               <li key={item.id} className="pc:w-[calc(33.333%_-_16px)]">
                 <AlbarPreview info={item} role={role} />
               </li>
@@ -80,21 +74,21 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
           <EmptyState role={role} />
         )}
       </section>
-      {role === "OWNER" && (
-        <FloatingButton
-          icon={plusIcon}
-          href="/addform"
-          className="pc:size-large fixed bottom-20 right-10 z-10"
-        >
-          폼 만들기
-        </FloatingButton>
-      )}
-      {cursor && albaList.length > 0 && (
+      <FloatingButton
+        icon={plusIcon}
+        href="/addform"
+        className="pc:size-large fixed bottom-20 right-10 z-10"
+      >
+        폼 만들기
+      </FloatingButton>
+      {cursor && formList.length > 0 && (
         <div ref={observerRef} style={{ height: "10px" }} />
       )}
-      {isLoading && albaList.length > 0 && <CardListSkeleton count={3} />}
+      {isLoading && formList.length > 0 && (
+        <SkeletonCardList count={3} role={role} />
+      )}
     </main>
   );
 };
 
-export default AlbaList;
+export default AlbaFormList;

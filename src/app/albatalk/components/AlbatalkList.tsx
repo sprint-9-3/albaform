@@ -77,9 +77,11 @@ const AlbatalkList = ({
       {isLoading && <PostCardListSkeleton count={3} />}
 
       {isLogin && (
-        <div className="fixed bottom-20 right-10">
-          <FloatingButton icon="/icon/writing.svg" href="/addtalk" />
-        </div>
+        <FloatingButton
+          icon="/icon/writing.svg"
+          href="/addtalk"
+          className="fixed bottom-20 right-10"
+        />
       )}
     </div>
   );
