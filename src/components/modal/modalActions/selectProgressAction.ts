@@ -4,14 +4,14 @@ import instance from "@/lib/instance";
 import { ProgressValue } from "../modalContent/SelectProgressModal";
 
 export const selectProgressAction = async (
-  status: ProgressValue,
+  data: { status: ProgressValue },
   applicationId: number | null
 ) => {
   const response = await instance(
     `${process.env.NEXT_PUBLIC_API_URL}/applications/${applicationId}`,
     {
       method: "PATCH",
-      body: JSON.stringify(status),
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },

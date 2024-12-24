@@ -7,8 +7,7 @@ import { useState } from "react";
 import { useModal } from "@/hooks/useModal";
 import { useToast } from "@/hooks/useToast";
 import { selectProgressAction } from "../modalActions/selectProgressAction";
-import { useAtomValue } from "jotai";
-import { applicationIdAtom } from "@/atoms/modalAtomStore";
+import { useParams } from "next/navigation";
 
 export type ProgressValue =
   | "REJECTED"
@@ -28,7 +27,8 @@ const SelectProgressModal = () => {
   const { addToast } = useToast();
   const viewPort = useViewPort();
   const [selected, setSelected] = useState<ProgressValue>("INTERVIEW_PENDING");
-  const applicationId = useAtomValue(applicationIdAtom);
+
+  const { applicationId } = useParams() as { applicationId: string };
 
   const handleChange = (value: ProgressValue) => {
     setSelected(value);
@@ -36,9 +36,12 @@ const SelectProgressModal = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await selectProgressAction(selected, applicationId);
+      const response = await selectProgressAction(
+        { status: selected },
+        Number(applicationId)
+      );
 
-      if (response.status === 200) {
+      if (response.status) {
         addToast("지원상태 수정이 완료되었습니다.", "success");
         closeModal();
       } else {
