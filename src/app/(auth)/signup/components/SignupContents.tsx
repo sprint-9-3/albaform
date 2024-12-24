@@ -214,7 +214,7 @@ const SignupContents = ({
               type="button"
               onClick={handleNextStep}
               style="orange300"
-              size="large"
+              size="2xl"
             >
               다음
             </SolidButton>

@@ -25,7 +25,7 @@ const AddTalkForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
     setValue,
   } = useForm<z.infer<typeof addTalkSchema>>({
     resolver: zodResolver(addTalkSchema),
@@ -209,11 +209,27 @@ const AddTalkForm = () => {
           />
         </div>
       </div>
-      <div className="mb-[18px] mt-[34px] flex flex-col gap-y-1 pc:absolute pc:right-0 pc:top-0 pc:h-[58px] pc:w-[372px] pc:flex-row pc:gap-x-3 tablet:absolute tablet:right-0 tablet:top-0 tablet:mb-0 tablet:mt-4 tablet:h-[46px] tablet:w-[217px] tablet:flex-row tablet:gap-x-2">
-        <SolidButton type="button" style="gray100" onClick={onCancel}>
+      <div className="mb-[18px] mt-[34px] flex flex-col gap-y-1 pc:absolute pc:right-0 pc:top-0 pc:w-[372px] pc:flex-row pc:gap-x-3 tablet:absolute tablet:right-0 tablet:top-0 tablet:mb-0 tablet:mt-4 tablet:w-56 tablet:flex-row tablet:gap-x-2">
+        <SolidButton
+          type="button"
+          size={
+            viewPort === "mobile" ? "xl" : viewPort === "tablet" ? "sm" : "lg"
+          }
+          className="pc:h-[58px]"
+          style="gray100"
+          onClick={onCancel}
+        >
           취소
         </SolidButton>
-        <SolidButton style="orange300">등록하기</SolidButton>
+        <SolidButton
+          disabled={!isValid || isSubmitting}
+          size={
+            viewPort === "mobile" ? "xl" : viewPort === "tablet" ? "sm" : "lg"
+          }
+          className="pc:h-[58px]"
+        >
+          등록하기
+        </SolidButton>
       </div>
     </form>
   );

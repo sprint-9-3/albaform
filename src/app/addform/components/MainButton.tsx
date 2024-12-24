@@ -39,7 +39,11 @@ const MainButton = () => {
     <div className="flex flex-col space-y-2 p-6">
       {!params.id ? (
         <>
-          <SolidButton style="outOrange300" onClick={handleTemporarySave}>
+          <SolidButton
+            style="outOrange300"
+            onClick={handleTemporarySave}
+            size="2xl"
+          >
             임시 저장
           </SolidButton>
           <SolidButton
@@ -47,6 +51,7 @@ const MainButton = () => {
             style="orange300"
             onClick={() => setAddFormSubmitTrigger(true)}
             disabled={submitDisabled || addFormIsSubmitting}
+            size="2xl"
           >
             {addFormIsSubmitting ? "등록중..." : "등록하기"}
           </SolidButton>
@@ -57,6 +62,7 @@ const MainButton = () => {
           style="orange300"
           onClick={() => setAddFormSubmitTrigger(true)}
           disabled={submitDisabled || addFormIsSubmitting}
+          size="2xl"
         >
           {addFormIsSubmitting ? "수정중..." : "수정하기"}
         </SolidButton>

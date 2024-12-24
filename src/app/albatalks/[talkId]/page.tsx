@@ -13,21 +13,15 @@ interface pageProps {
 const AlbaTalkDetailPage = async ({ params }: pageProps) => {
   const { talkId } = await params;
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
   const userId = cookieStore.get("id")?.value;
-
   const response = await getAlbaTalkDetail(talkId);
   const info = response?.data;
 
   return (
     <div>
-      <Header info={info} userId={Number(userId)} isLogin={accessToken} />
+      <Header info={info} userId={Number(userId)} />
       <Content content={info.content} />
-      <CommentSection
-        id={info.id}
-        userId={Number(userId)}
-        isLogin={accessToken}
-      />
+      <CommentSection id={info.id} userId={Number(userId)} />
     </div>
   );
 };

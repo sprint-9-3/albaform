@@ -48,7 +48,6 @@ const ImageInput = ({
       );
       setNewFiles(initialImage);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialImage]);
 
   useEffect(() => {

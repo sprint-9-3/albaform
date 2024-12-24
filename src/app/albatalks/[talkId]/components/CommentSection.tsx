@@ -17,48 +17,33 @@ import useInfinityScroll from "@/hooks/useInfinityScroll";
 import SkeletonCommentList from "./SkeletonCommentList";
 import LoadingSpinner from "@/components/spinner/LoadingSpinner";
 import { useToast } from "@/hooks/useToast";
+import useViewPort from "@/hooks/useViewport";
 
-const CommentSection = ({
-  id,
-  userId,
-  isLogin,
-}: {
-  id: number;
-  userId: number;
-  isLogin: string | undefined;
-}) => {
+const CommentSection = ({ id, userId }: { id: number; userId: number }) => {
   const [list, setList] = useState<Comment[]>([]);
   const [totalItemCount, setTotalItemCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+
+  const viewPort = useViewPort();
   const { addToast } = useToast();
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
     reset,
   } = useForm<z.infer<typeof albaTalkCommentSchema>>({
     resolver: zodResolver(albaTalkCommentSchema),
     mode: "onSubmit",
-    defaultValues: {
-      content: "",
-    },
+    defaultValues: { content: "" },
   });
 
-  const handleUpdatedComment = (updatedComment: Comment) => {
-    setList((prevList) =>
-      prevList.map((comment) =>
-        comment.id === updatedComment.id ? updatedComment : comment
-      )
-    );
-  };
-
-  const handleDeleteComment = (commentId: number) => {
-    setList((prevList) =>
-      prevList.filter((comment) => comment.id !== commentId)
-    );
-  };
+  useEffect(() => {
+    setIsLogin(localStorage.getItem("isLogin") === "true");
+  }, []);
 
   const fetchComments = useCallback(async () => {
     if (!isLogin || isLoading || currentPage > totalPages) return;
@@ -99,6 +84,21 @@ const CommentSection = ({
     }
   };
 
+  const handleUpdatedComment = (updatedComment: Comment) => {
+    setList((prevList) =>
+      prevList.map((comment) =>
+        comment.id === updatedComment.id ? updatedComment : comment
+      )
+    );
+  };
+
+  const handleDeleteComment = (commentId: number) => {
+    setList((prevList) =>
+      prevList.filter((comment) => comment.id !== commentId)
+    );
+    setTotalItemCount((prev) => prev - 1);
+  };
+
   const observerRef = useInfinityScroll({ fetchMoreData: fetchComments });
 
   useEffect(() => {
@@ -131,11 +131,16 @@ const CommentSection = ({
         </div>
         <div
           className={cls(
-            "ml-auto max-w-[108px] pc:mt-2 pc:max-w-[214px] tablet:mt-2",
             errors.content ? "mt-[26px] pc:mt-8 tablet:mt-[26px]" : ""
           )}
         >
-          <SolidButton style="orange300">등록하기</SolidButton>
+          <SolidButton
+            disabled={!isValid || isSubmitting}
+            size={viewPort === "pc" ? "lg" : "sm"}
+            className="ml-auto pc:mt-2 tablet:mt-2 tablet:h-[50px] mobile:h-[50px]"
+          >
+            등록하기
+          </SolidButton>
         </div>
       </form>
 

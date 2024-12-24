@@ -102,7 +102,7 @@ const SignupSecondContents = ({
         disabled={!isValid || isSubmitting}
         type="submit"
         style="orange300"
-        size="large"
+        size="2xl"
       >
         {isSubmitting ? "잠시만 기다려주세요." : "시작하기"}
       </SolidButton>

@@ -103,7 +103,7 @@ const SigninContents = () => {
           disabled={!isValid || isSubmitting}
           type="submit"
           style="orange300"
-          size="large"
+          size="2xl"
         >
           로그인 하기
         </SolidButton>

@@ -8,7 +8,7 @@ import heartIcon from "@/../public/icon/heart-md.svg";
 import hrartFillIcon from "@/../public/icon/heart-fill-md.svg";
 import ProfileImage from "./ProfileImage";
 import formatYearMonthDay from "@/utils/formatYearMonthDay";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import deletePosts from "../actions/deletePosts";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
@@ -32,14 +32,18 @@ interface props {
     isLiked: boolean;
   };
   userId: number;
-  isLogin: string | undefined;
 }
 
-const Header = ({ info, userId, isLogin }: props) => {
+const Header = ({ info, userId }: props) => {
   const [isLiked, setIsLiked] = useState(info.isLiked);
   const [likeCount, setLikeCount] = useState(info.likeCount);
+  const [isLogin, setIsLogin] = useState(false);
   const router = useRouter();
   const { addToast } = useToast();
+
+  useEffect(() => {
+    setIsLogin(localStorage.getItem("isLogin") === "true");
+  }, []);
 
   const handleEdit = async () => {
     router.push(`/addtalk?talkId=${info.id}`);
@@ -68,14 +72,10 @@ const Header = ({ info, userId, isLogin }: props) => {
     setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
 
     try {
-      let response;
-      if (isLiked) {
-        // 좋아요 취소 요청
-        response = await postDeleteLike(info.id, "DELETE");
-      } else {
-        // 좋아요 요청
-        response = await postDeleteLike(info.id, "POST");
-      }
+      const response = await postDeleteLike(
+        info.id,
+        isLiked ? "DELETE" : "POST"
+      );
 
       if (response.status !== 200) {
         console.error("좋아요 요청에 실패했습니다.");
