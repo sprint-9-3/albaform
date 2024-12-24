@@ -44,7 +44,7 @@ const MyApplicantDetailPage = async ({
       {albarformData.imageUrls && (
         <Carousel imageUrls={albarformData.imageUrls} />
       )}
-      <div className="flex flex-col gap-6 p-10 pc:grid pc:grid-cols-2 pc:gap-x-[160px] pc:gap-y-[120px] pc:px-[200px] tablet:px-[150px]">
+      <div className="flex flex-col gap-6 pc:grid pc:grid-cols-2 pc:gap-x-[160px] pc:gap-y-[120px]">
         <section className="pc:col-start-1">
           <Title info={albarformData} />
         </section>

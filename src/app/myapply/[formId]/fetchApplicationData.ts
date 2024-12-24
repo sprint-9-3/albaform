@@ -1,10 +1,8 @@
 import instance from "@/lib/instance";
 
-const fetchApplicationData = async (formId: string, role: string) => {
+const fetchApplicationData = async (formId: string) => {
   const response = await instance(
-    role
-      ? `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/my-application`
-      : `${process.env.NEXT_PUBLIC_DEPLOY_URL}/api/nonmemberinfo`,
+    `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/my-application`,
     {
       method: "GET",
       headers: { "content-type": "application/json" },

@@ -19,7 +19,7 @@ const Title = ({ info }: { info: titleData }) => {
   const submitDate = getCurrentTime(info.createdAt);
 
   return (
-    <div className="flex w-full flex-col gap-6 pc:w-[720px]">
+    <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between text-xs pc:justify-start pc:text-md">
         <ul className="flex gap-2">
           <li className="rounded-md border border-orange-100 bg-orange-50 px-2 py-1 font-semibold text-orange-300">

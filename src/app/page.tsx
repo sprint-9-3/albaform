@@ -26,7 +26,7 @@ const HomePage = () => {
   ];
 
   return (
-    <main className="pb-32">
+    <main>
       <section className="relative h-[609px] w-full bg-black-400 pc:h-[1080px] tablet:h-[633px]">
         <div className="flex flex-col items-center py-[136px] pc:pt-[160px] tablet:pt-[160px]">
           <div className="relative h-[24px] w-[124px] pc:h-[48px] pc:w-[248px]">

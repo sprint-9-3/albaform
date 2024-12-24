@@ -18,7 +18,6 @@ const Sidebar = () => {
     localStorage.removeItem("isLogin");
     setIsOpen(false);
     router.push("/");
-    window.location.reload();
   };
 
   if (!isOpen) return null;
@@ -44,6 +43,7 @@ const Sidebar = () => {
           <li>
             <Link
               href="/mypage"
+              onClick={() => setIsOpen(false)}
               className="flex h-[100px] w-full items-center gap-[16px] px-[16px] py-[24px]"
             >
               <div className="text-orange-100">

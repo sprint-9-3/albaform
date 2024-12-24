@@ -65,8 +65,8 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
   return (
     <>
       <Carousel imageUrls={data.imageUrls} />
-      <div className="mt-8 grid gap-[32px] pc:mt-[80px] pc:grid-cols-[770px_640px] pc:grid-rows-[432px_336px_230px_562px] pc:justify-items-center pc:gap-0 pc:gap-x-[150px] pc:gap-y-[40px] pc:grid-areas-layout tablet:w-[550px] tablet:grid-cols-1 tablet:grid-rows-[270px_220px_156px_396px_302px_340px_158px] mobile:w-[327px] mobile:grid-cols-1 mobile:grid-rows-[270px_116px_156px_396px_302px_340px_158px]">
-        <section className="self-center pc:grid-in-box1">
+      <div className="mt-8 grid gap-[32px] pc:grid-cols-[770px_640px] pc:grid-rows-[432px_336px_230px_562px] pc:justify-items-center pc:gap-0 pc:gap-x-[150px] pc:gap-y-[40px] pc:grid-areas-layout tablet:w-[550px] tablet:grid-cols-1 tablet:grid-rows-[270px_220px_156px_396px_302px_340px_158px] mobile:w-[327px] mobile:grid-cols-1 mobile:grid-rows-[270px_116px_156px_396px_302px_340px_158px]">
+        <section className="w-full pc:grid-in-box1">
           <Title info={data} />
         </section>
         <section className="justify-self-center pc:self-center pc:grid-in-box4 tablet:self-center">
@@ -97,6 +97,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
             <ApllicantActionButtons
               formId={formId}
               recruitmentEndDate={data.recruitmentEndDate}
+              isLogin={role !== "nonMember"}
             />
           </section>
         ) : isMyAlbarform ? (

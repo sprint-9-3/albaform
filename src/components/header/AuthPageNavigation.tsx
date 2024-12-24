@@ -12,7 +12,7 @@ const AuthPageNavigation = () => {
     pathname === "/signin/owner" || pathname === "/signup/owner";
 
   return (
-    <ul className="flex gap-[24px] text-gray-300">
+    <ul className="flex gap-[24px] text-gray-300 mobile:hidden">
       <li>
         <Link
           href={isSignInPage ? "/signin/owner" : "/signup/owner"}

@@ -92,13 +92,11 @@ const AlbarPreview = ({ info, role }: AlbarPreviewProps) => {
           {info.title}
         </h2>
       </div>
-      <div className="mt-[24px] flex h-[38px] items-center justify-around rounded-[16px] border border-line-100 text-sm text-black-200 pc:h-[50px] pc:text-lg">
-        <span className="border-r border-line-100 pr-[20px]">
-          지원자 {info.applyCount}명
-        </span>
-        <span className="border-r border-line-100 pr-[20px]">
-          스크랩 {info.scrapCount}명
-        </span>
+      <div className="relative mt-[24px] flex h-[38px] items-center justify-around rounded-[16px] border border-line-100 text-sm text-black-200 pc:h-[50px] pc:text-lg">
+        <span>지원자 {info.applyCount}명</span>
+        <span className="absolute left-[35%] h-[50%] border border-line-100" />
+        <span>스크랩 {info.scrapCount}명</span>
+        <span className="absolute left-[70%] h-[50%] border border-line-100" />
         <span>마감 {dday}</span>
       </div>
     </div>
