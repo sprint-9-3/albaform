@@ -18,6 +18,7 @@ const ApllicantActionButtons = ({
   const [disabled, setDisabled] = useState(false);
   const router = useRouter();
   const { openModal } = useModal();
+  const isLogin = localStorage.getItem("isLogin");
 
   useEffect(() => {
     if (isPast(recruitmentEndDate)) setDisabled(true);
@@ -27,6 +28,7 @@ const ApllicantActionButtons = ({
     <>
       <SolidButton
         icon={disabled ? "" : "/icon/write-fill-md.svg"}
+        size="2xl"
         style={disabled ? "gray100" : "orange300"}
         disabled={disabled}
         onClick={() => router.push(`/apply/${formId}`)}
@@ -35,8 +37,13 @@ const ApllicantActionButtons = ({
       </SolidButton>
       <SolidButton
         icon="/icon/document-md.svg"
+        size="2xl"
         style="outOrange300"
-        onClick={() => openModal("GetMyApplicationModal")}
+        onClick={
+          isLogin
+            ? () => router.push(`/myapply/${formId}`)
+            : () => openModal("GetMyApplicationModal")
+        }
       >
         내 지원 내역 보기
       </SolidButton>

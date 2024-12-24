@@ -1,3 +1,5 @@
+"use server";
+
 import AlbaFormList from "./AlbaFormList";
 import { getAlbaFormList } from "../getAlbaFormList";
 import ApplyList from "./ApplyList";

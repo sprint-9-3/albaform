@@ -1,3 +1,5 @@
+"use server";
+
 import instance from "@/lib/instance";
 
 interface SearchParamsData {
@@ -30,7 +32,7 @@ export const getAlbaFormList = async ({
 
   try {
     const response = await instance(url.toString(), {
-      cache: "force-cache",
+      next: { revalidate: 300, tags: ["myalbaform"] },
     });
 
     if (response.status !== 200) {

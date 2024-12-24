@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import NoticeProgressToolTip from "./NoticeProgressToolTip";
 import getCurrentTime from "@/utils/getCurrentTime";
 import translateStatus from "@/utils/translateStatus";
-import { getDday } from "@/utils/getDday";
 import { useModal } from "@/hooks/useModal";
+import { getDday } from "@/utils/getDday";
 
 type ApplicationStatusProps = {
   createdAt: string;
@@ -32,12 +33,20 @@ const ApplicationStatus = ({
         </span>
         <span>{formattedCreatedTime}</span>
       </div>
-      <div className="flex justify-between border-b border-b-line-100 py-4 text-md text-black-400 pc:border-none">
+      <div className="flex items-center justify-between border-b border-b-line-100 py-4 text-md text-black-400 pc:border-none">
         <span className="text-black-100">진행 상태</span>
         {role === "OWNER" && (
-          <button onClick={() => openModal("SelectProgressModal")}>
-            <Image src="/icon/write-black.svg" width={36} height={36} alt="" />
-          </button>
+          <div className="relative mr-auto flex items-center">
+            <button
+              onClick={() => openModal("SelectProgressModal")}
+              className="ml-2 mr-auto"
+            >
+              <Image src="/icon/edit.svg" width={28} height={28} alt="" />
+            </button>
+            <div className="absolute -bottom-[180%]">
+              <NoticeProgressToolTip />
+            </div>
+          </div>
         )}
         <span>{translatedStatus}</span>
       </div>

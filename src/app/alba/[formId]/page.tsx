@@ -44,7 +44,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
   let data: AlbaformDetailData;
   let isMyAlbarform: boolean;
   const cookie = await cookies();
-  const role = cookie.get("role")?.value || "defaultRole";
+  const role = cookie.get("role")?.value || "nonMember";
   const userId = cookie.get("id")?.value;
   const { formId } = await params;
 
@@ -79,28 +79,36 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
           <Content description={data.description} />
         </section>
         <section
-          className={cls(isMyAlbarform ? "pc:grid-in-box7" : "pc:grid-in-box6")}
+          className={
+            role === "APPLICANT" || role === "nonMember"
+              ? "pc:grid-in-box7"
+              : isMyAlbarform
+                ? "pc:grid-in-box7"
+                : "pc:grid-in-box6"
+          }
         >
           <DetailRequirements info={data} />
         </section>
         <section className="pc:grid-in-box3">
           <StoreLocation location={data.location} />
         </section>
-        <section
-          className={cls(
-            "flex w-full flex-col gap-[10px]",
-            isMyAlbarform ? "pc:grid-in-box6" : ""
-          )}
-        >
-          {role === "APPLICANT" ? (
+        {role === "APPLICANT" || role === "nonMember" ? (
+          <section className="flex w-full flex-col gap-[10px] pc:grid-in-box6">
             <ApllicantActionButtons
               formId={formId}
               recruitmentEndDate={data.recruitmentEndDate}
             />
-          ) : isMyAlbarform ? (
+          </section>
+        ) : isMyAlbarform ? (
+          <section
+            className={cls(
+              "flex w-full flex-col gap-[10px]",
+              isMyAlbarform ? "pc:grid-in-box6" : ""
+            )}
+          >
             <OwnerActionButtons formId={formId} />
-          ) : null}
-        </section>
+          </section>
+        ) : null}
       </div>
       <NoticeApplicant count={data.applyCount} />
       <NoticeIsClosed closedDate={data.recruitmentEndDate} />

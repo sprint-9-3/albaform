@@ -34,15 +34,11 @@ export const useAddFormStepOne = () => {
 // stepOne 임시 데이터 관리
 export const useStepOneTemporaryData = ({
   currentImageList,
-  setCurrentImageList,
   temporaryDateRange,
   setTemporaryDataByStep,
-  fields,
 }: {
   currentImageList: File[];
-  setCurrentImageList: (images: File[]) => void;
   temporaryDateRange: [string, string];
-  fields: readonly string[];
   setTemporaryDataByStep: (data: AddFormStepProps) => void;
 }) => {
   const { getValues } = useFormContext<z.infer<typeof addFormSchema>>();

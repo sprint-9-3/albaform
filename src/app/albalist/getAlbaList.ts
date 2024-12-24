@@ -1,3 +1,5 @@
+"use server";
+
 interface SearchParamsData {
   orderBy?: string;
   limit: number;
@@ -24,7 +26,7 @@ export const getAlbaList = async ({
 
   try {
     const response = await fetch(url.toString(), {
-      cache: "force-cache",
+      cache: "no-store",
     });
 
     if (!response.ok) {

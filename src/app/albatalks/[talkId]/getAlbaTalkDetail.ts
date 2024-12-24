@@ -1,8 +1,12 @@
+"use server";
+
 const getAlbaTalkDetail = async (talkId: string) => {
   const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/posts/${talkId}`);
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      cache: "no-store",
+    });
 
     if (!response.ok) {
       return {

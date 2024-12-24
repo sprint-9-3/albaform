@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 type ResumeInputProps = {
@@ -10,7 +12,7 @@ const ResumInput = ({ title }: ResumeInputProps) => {
       <span>{title}.pdf </span>
       <button>
         <Image
-          src="/icon/write-black.svg"
+          src="/icon/edit-black.svg"
           width={32}
           height={32}
           alt="이력서 수정 버튼"

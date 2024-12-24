@@ -38,15 +38,24 @@ const StepThreeContents = () => {
     []
   );
 
-  const stepThreeData = useMemo(() => {
-    return fields.reduce(
-      (acc, field) => ({
-        ...acc,
-        [field]: field === "hourlyWage" ? Number(watch(field)) : watch(field),
-      }),
-      {} as NonNullable<AddFormStepProps["stepThree"]>
-    );
-  }, [watch, fields]);
+  // 임시 데이터 atom 업데이트
+  useEffect(() => {
+    const subscription = watch((value) => {
+      const stepThreeData = fields.reduce(
+        (acc, field) => ({
+          ...acc,
+          [field]: field === "hourlyWage" ? Number(value[field]) : value[field],
+        }),
+        {} as NonNullable<AddFormStepProps["stepThree"]>
+      );
+      setTemporaryDataByStep((prev) => ({
+        ...prev,
+        stepThree: stepThreeData,
+      }));
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, fields, setTemporaryDataByStep]);
 
   // 3단계 '작성중' 태그 여부
   useEffect(() => {
@@ -61,14 +70,6 @@ const StepThreeContents = () => {
 
     return () => subscription.unsubscribe();
   }, [watch, fields, setStepActive]);
-
-  // 임시 데이터 atom 업데이트
-  useEffect(() => {
-    setTemporaryDataByStep((prev) => ({
-      ...prev,
-      stepThree: stepThreeData,
-    }));
-  }, [stepThreeData, setTemporaryDataByStep]);
 
   // 임시 데이터 로컬스토리지에서 불러오기
   useEffect(() => {

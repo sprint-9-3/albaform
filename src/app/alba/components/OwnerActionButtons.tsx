@@ -12,6 +12,7 @@ const OwnerActionButtons = ({ formId }: { formId: string }) => {
     <>
       <SolidButton
         icon="/icon/document-md.svg"
+        size="2xl"
         style="orange300"
         onClick={() => openModal("ApplicantListModal")}
       >
@@ -19,6 +20,7 @@ const OwnerActionButtons = ({ formId }: { formId: string }) => {
       </SolidButton>
       <SolidButton
         icon="/icon/write-lg.svg"
+        size="2xl"
         style="orange300"
         onClick={() => router.push(`/addform/${formId}`)}
       >
@@ -26,6 +28,7 @@ const OwnerActionButtons = ({ formId }: { formId: string }) => {
       </SolidButton>
       <SolidButton
         icon="/icon/trash-md.svg"
+        size="2xl"
         style="gray100"
         onClick={() => openModal("DeleteAlbaformModal")}
       >

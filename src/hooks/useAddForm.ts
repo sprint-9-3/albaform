@@ -12,6 +12,7 @@ import {
 import { useToast } from "./useToast";
 import { formatDate } from "@/utils/formatDate";
 import { base64ToFile } from "@/utils/imageFileConvert";
+import { useModal } from "./useModal";
 
 // addform 전체 관리
 export const useAddForm = () => {
@@ -41,8 +42,36 @@ export const useAddForm = () => {
     },
   });
 
+  // 단계별 페이지에서 반복하여 모달이 뜨는 것을 방지하기 위한 코드 포함
+  const { openModal } = useModal();
+  const showModal = useRef(true);
+  const modalRef = useRef(openModal);
+  const setStepOneActive = useSetAtom(stepActiveAtomFamily("stepOne"));
+  const setStepTwoActive = useSetAtom(stepActiveAtomFamily("stepTwo"));
+  const setStepThreeActive = useSetAtom(stepActiveAtomFamily("stepThree"));
+
+  useEffect(() => {
+    modalRef.current = openModal;
+  }, [openModal]);
+
+  // 모달에서 '새로 쓰기' 버튼 클릭 시 전체 임시저장 데이터 초기화
+  const resetAllTempData = useCallback(() => {
+    methods.reset();
+    setStepOneActive(false);
+    setStepTwoActive(false);
+    setStepThreeActive(false);
+    showModal.current = true;
+  }, [methods, setStepOneActive, setStepTwoActive, setStepThreeActive]);
+
   const loadAllTempData = useCallback(() => {
     const TempDataArr = ["stepOne", "stepTwo", "stepThree"];
+
+    const hasTempData = TempDataArr.some((step) => localStorage.getItem(step));
+
+    if (hasTempData && showModal.current) {
+      modalRef.current("NewWriteformModal");
+      showModal.current = false;
+    }
 
     TempDataArr.forEach((step) => {
       const localStorageData = localStorage.getItem(step);
@@ -64,7 +93,7 @@ export const useAddForm = () => {
     });
   }, [methods]);
 
-  return { methods, loadAllTempData };
+  return { methods, loadAllTempData, resetAllTempData };
 };
 
 // 등록 버튼 활성화 여부, 등록 중 여부
@@ -80,7 +109,7 @@ export const useValidateForm = (
 
   const values = methods.getValues();
 
-  // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 미동작으로 값들이 모두 채워지면 활성화)
+  // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 미동작으로, 값들이 모두 채워지면 활성화)
   useEffect(() => {
     const subscription = methods.watch((value) => {
       if (!value) return;

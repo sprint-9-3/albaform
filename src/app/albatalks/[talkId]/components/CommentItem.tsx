@@ -1,3 +1,5 @@
+"use client";
+
 import { Comment } from "@/types/comment";
 import ProfileImage from "./ProfileImage";
 import formatYearMonthDay from "@/utils/formatYearMonthDay";

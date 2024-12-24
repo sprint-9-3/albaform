@@ -8,6 +8,7 @@ import translateStatus from "@/utils/translateStatus";
 import LoadingSpinner from "./spinner/LoadingSpinner";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useModal } from "@/hooks/useModal";
 
 interface ApplicantData {
   applicantId: number;
@@ -30,6 +31,7 @@ const ApplicantStatsList = () => {
   const [orderExperience, setOrderExperience] = useState<"asc" | "desc">("asc");
   const [orderByStatus, setOrderByStatus] = useState<"asc" | "desc">("asc");
   const { formId } = useParams();
+  const { closeModal } = useModal();
 
   useEffect(() => {
     const fetchApplicantList = async () => {
@@ -47,8 +49,6 @@ const ApplicantStatsList = () => {
     fetchApplicantList();
   }, [formId, orderExperience, orderByStatus]);
 
-  console.log("지원자 리스트:", list);
-
   const toggleSortButton = (mode: string) => {
     if (mode === "experience")
       orderExperience === "asc"
@@ -58,6 +58,11 @@ const ApplicantStatsList = () => {
       orderByStatus === "asc"
         ? setOrderByStatus("desc")
         : setOrderByStatus("asc");
+  };
+
+  const handleNavigate = (id: number) => {
+    router.push(`/application/${formId}/${id}`);
+    closeModal();
   };
 
   return (
@@ -111,7 +116,7 @@ const ApplicantStatsList = () => {
                     <tr
                       key={el.id}
                       className="h-[72px] w-[375px] cursor-pointer border-t border-t-line-100 text-left hover:text-orange-300 pc:text-xl"
-                      onClick={() => router.push(`/applications/${el.id}`)}
+                      onClick={() => handleNavigate(el.id)}
                     >
                       <td className="pl-4 underline">{el.name}</td>
                       <td className="pl-5">

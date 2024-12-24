@@ -1,3 +1,5 @@
+"use server";
+
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 import SkeletonCardList from "./components/SkeletonCardList";

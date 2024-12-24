@@ -1,3 +1,5 @@
+"use server";
+
 import instance from "@/lib/instance";
 
 const getComments = async (id: number, page: number, pageSize: number) => {
@@ -9,7 +11,9 @@ const getComments = async (id: number, page: number, pageSize: number) => {
   url.searchParams.append("pageSize", pageSize.toString());
 
   try {
-    const response = await instance(url.toString());
+    const response = await instance(url.toString(), {
+      cache: "no-store",
+    });
 
     if (response.status !== 200) {
       return {

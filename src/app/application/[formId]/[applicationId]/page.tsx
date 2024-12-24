@@ -1,33 +1,32 @@
-import fetchApplicationData from "./fetchApplicationData";
+import fetchApplicantData from "./fetchApplicantData";
 import Title from "@/app/alba/components/Title";
+import fetchAlbarformDetailData from "@/app/alba/[formId]/fetchAlbarformDetailData";
 import Content from "@/app/alba/components/Content";
 import MyApplication from "@/app/alba/components/MyApplication";
-import fetchAlbarformDetailData from "@/app/alba/[formId]/fetchAlbarformDetailData";
-import Carousel from "@/components/Carousel/Carousel";
 import ApplicationStatus from "@/components/card/ApplicationStatus";
-import { cookies } from "next/headers";
+import Carousel from "@/components/Carousel/Carousel";
 import { AlbaformDetailData, MyApplicationData } from "@/types/alba";
 
 export const metadata = {
-  title: "내 지원내역 상세 보기",
-  description: "Albarform - 내 지원내역 상세 보기 페이지입니다",
+  title: "지원자 상세 보기",
+  description: "Albarform - 지원자 상세 보기 페이지입니다",
 };
 
-interface MyApplyPageProps {
+interface MyApplicantDetailPageProps {
   params: Promise<{ formId: string; applicationId: string }>;
 }
 
-const MyApplyPage = async ({ params }: MyApplyPageProps) => {
+const MyApplicantDetailPage = async ({
+  params,
+}: MyApplicantDetailPageProps) => {
   let albarformData: AlbaformDetailData;
-  let myApplicationData: MyApplicationData;
-  const cookie = await cookies();
-  const role = cookie.get("role")?.value;
-  const { formId } = await params;
+  let myApplicantData: MyApplicationData;
+  const { formId, applicationId } = await params;
 
   try {
-    [albarformData, myApplicationData] = await Promise.all([
+    [albarformData, myApplicantData] = await Promise.all([
       fetchAlbarformDetailData(formId),
-      fetchApplicationData(formId, role as string),
+      fetchApplicantData(applicationId),
     ]);
   } catch (error) {
     console.error(error);
@@ -55,17 +54,17 @@ const MyApplyPage = async ({ params }: MyApplyPageProps) => {
         <section className="pc:col-start-2 pc:row-start-1">
           <ApplicationStatus
             recruitmentEndDate={albarformData.recruitmentEndDate}
-            createdAt={myApplicationData.createdAt}
-            status={myApplicationData.status}
-            role={role as string}
+            createdAt={myApplicantData.createdAt}
+            status={myApplicantData.status}
+            role="OWNER"
           />
         </section>
         <section className="mt-8 pc:col-start-2 pc:row-start-2 pc:-mt-48">
-          <MyApplication info={myApplicationData} />
+          <MyApplication info={myApplicantData} />
         </section>
       </div>
     </>
   );
 };
 
-export default MyApplyPage;
+export default MyApplicantDetailPage;

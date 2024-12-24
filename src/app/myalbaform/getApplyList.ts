@@ -1,3 +1,5 @@
+"use server";
+
 import instance from "@/lib/instance";
 
 export const getApplyList = async ({
@@ -22,7 +24,7 @@ export const getApplyList = async ({
 
   try {
     const response = await instance(url.toString(), {
-      cache: "force-cache",
+      next: { revalidate: 300, tags: ["myalbaform"] },
     });
 
     if (response.status !== 200) {

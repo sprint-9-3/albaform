@@ -1,3 +1,5 @@
+"use server";
+
 const Content = ({ content }: { content: string }) => {
   return (
     <div>

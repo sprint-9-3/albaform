@@ -9,7 +9,7 @@ import {
   currentImageListAtom,
   addFromSubmitTriggerAtom,
 } from "@/atoms/addFormAtomStore";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { handleDateRangeFormat } from "@/utils/formatAddFormDate";
 import { addFormImgUpload } from "../actions/addFormImgUpload";
 import { useToast } from "@/hooks/useToast";
@@ -20,6 +20,7 @@ import {
   useValidateForm,
 } from "@/hooks/useAddForm";
 import StepContent from "./StepContent";
+import { newWriteAtom } from "@/atoms/newWrite";
 
 interface StepContainerProps {
   albaForm?:
@@ -37,7 +38,8 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
   const [submitTrigger, setSubmitTrigger] = useAtom(addFromSubmitTriggerAtom);
   const { addToast } = useToast();
-  const { methods, loadAllTempData } = useAddForm();
+  const [isNewWrite, setIsNewWrite] = useAtom(newWriteAtom);
+  const { methods, loadAllTempData, resetAllTempData } = useAddForm();
   const router = useRouter();
   const isEdit = albaForm && !("status" in albaForm);
   const { initializeAddForm } = useAddFormInit({ albaForm });
@@ -53,6 +55,15 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   useEffect(() => {
     loadAllTempData();
   }, [loadAllTempData]);
+
+  // 새로 쓰기 버튼 클릭 시 전체 임시저장 데이터 초기화
+  useEffect(() => {
+    if (isNewWrite) {
+      resetAllTempData();
+      setCurrentImageList([]);
+    }
+    setIsNewWrite(false);
+  }, [isNewWrite, resetAllTempData, setCurrentImageList, setIsNewWrite]);
 
   useValidateForm(methods);
 
