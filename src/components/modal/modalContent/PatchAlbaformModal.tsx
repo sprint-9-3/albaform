@@ -6,11 +6,13 @@ import SolidButton from "@/components/button/SolidButton";
 import { useModal } from "@/hooks/useModal";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
+import useViewPort from "@/hooks/useViewport";
 
 const PatchAlbaformModal = () => {
   const { closeModal } = useModal();
-  const router = useRouter();
   const { addToast } = useToast();
+  const viewport = useViewPort();
+  const router = useRouter();
 
   const handleMoveAddform = () => {
     addToast("작성 중인 알바폼을 불러왔습니다.", "info");
@@ -42,6 +44,7 @@ const PatchAlbaformModal = () => {
         <p className="modal-sub-title">이어서 작성하시겠어요?</p>
         <div className="mt-6 flex w-[327px] flex-col gap-2 pc:w-[360px]">
           <SolidButton
+            size={viewport === "pc" ? "2xl" : "xl"}
             style="orange300"
             type="button"
             onClick={handleMoveAddform}
@@ -49,6 +52,7 @@ const PatchAlbaformModal = () => {
             이어쓰기
           </SolidButton>
           <SolidButton
+            size={viewport === "pc" ? "2xl" : "xl"}
             style="outOrange300"
             type="button"
             onClick={handleNewWriteClick}

@@ -7,10 +7,12 @@ import { useSetAtom } from "jotai";
 import { addressAtom } from "@/atoms/addressAtom";
 import { useToast } from "@/hooks/useToast";
 import KakaoMap3 from "@/components/map/kakaoMapLocation";
+import useViewPort from "@/hooks/useViewport";
 
 const SelectLocationModal = () => {
   const { addToast } = useToast();
   const { closeModal } = useModal();
+  const viewport = useViewPort();
   const [location, setLocation] = useState("서울시");
   const [tempAddress, setTempAddress] = useState("");
   const setAddress = useSetAtom(addressAtom);
@@ -38,7 +40,12 @@ const SelectLocationModal = () => {
         <div className="mt-6 flex w-full gap-3">
           <SearchLocation onSearch={handleSearch} />
           <div className="w-[80px] pc:h-[62px] pc:w-[200px]">
-            <SolidButton style="orange300">검색</SolidButton>
+            <SolidButton
+              size={viewport === "pc" ? "2xl" : "xl"}
+              style="orange300"
+            >
+              검색
+            </SolidButton>
           </div>
         </div>
         <form className="flex w-full flex-col">
@@ -52,6 +59,7 @@ const SelectLocationModal = () => {
             </div>
             <div className="flex gap-3">
               <SolidButton
+                size={viewport === "pc" ? "2xl" : "xl"}
                 style="gray100"
                 type="button"
                 onClick={() => closeModal()}
@@ -60,6 +68,7 @@ const SelectLocationModal = () => {
               </SolidButton>
 
               <SolidButton
+                size={viewport === "pc" ? "2xl" : "xl"}
                 style="orange300"
                 type="submit"
                 onClick={handleSubmit}

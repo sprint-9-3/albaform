@@ -57,7 +57,7 @@ const SelectProgressModal = () => {
         <h2 className="modal-title mt-0">진행상태 선택</h2>
         <p className="modal-sub-title">현재 진행상태를 알려주세요.</p>
 
-        <ul className="mt-[24px] flex w-full flex-col gap-[10px] pc:mt-12">
+        <ul className="mt-[24px] flex w-[327px] flex-col gap-[10px] pc:mt-12">
           {progressList.map((progress) => (
             <li key={progress.name}>
               <label
@@ -80,7 +80,7 @@ const SelectProgressModal = () => {
         <div className="mt-[30px] flex gap-[11px] pc:gap-[8px]">
           <div className={buttmonContainerStyle}>
             <SolidButton
-              size={viewPort === "pc" ? "large" : "small"}
+              size={viewPort === "pc" ? "2xl" : "xl"}
               style="gray100"
               type="button"
               onClick={() => {
@@ -92,7 +92,7 @@ const SelectProgressModal = () => {
           </div>
           <div className={buttmonContainerStyle}>
             <SolidButton
-              size={viewPort === "pc" ? "large" : "small"}
+              size={viewPort === "pc" ? "2xl" : "xl"}
               style="orange300"
               type="button"
               onClick={handleSubmit}

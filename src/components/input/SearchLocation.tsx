@@ -22,7 +22,7 @@ const SearchLocation = ({ onSearch }: SearchLocationProps) => {
   return (
     <form
       onSubmit={handleSubmitSearch}
-      className="relative h-[54px] w-[327px] pc:h-[72px] pc:w-[1229px] tablet:h-[54px] tablet:w-[490px]"
+      className="relative h-[54px] w-full pc:h-[72px] pc:w-[1229px] tablet:h-[54px] tablet:w-[490px]"
     >
       <input
         className={inputStyle}

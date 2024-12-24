@@ -14,10 +14,12 @@ import { useModal } from "@/hooks/useModal";
 import { useParams, useRouter } from "next/navigation";
 import { getMyApplicationAction } from "../modalActions/getMyApplicationAction";
 import { useToast } from "@/hooks/useToast";
+import useViewPort from "@/hooks/useViewport";
 
 const GetMyApplicationModal = () => {
   const { closeModal } = useModal();
   const { addToast } = useToast();
+  const viewport = useViewPort();
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -65,7 +67,7 @@ const GetMyApplicationModal = () => {
 
   return (
     <ModalContainer>
-      <div className="flex flex-col pb-[8px]">
+      <div className="flex flex-col items-center pb-[8px]">
         <h2 className="text-2lg font-semibold text-black-400 pc:text-[32px] pc:leading-[46px]">
           내 지원 내역
         </h2>
@@ -135,6 +137,7 @@ const GetMyApplicationModal = () => {
 
           <div className="mt-6 w-[327px] pc:mt-[46px] pc:w-[360px]">
             <SolidButton
+              size={viewport === "pc" ? "2xl" : "xl"}
               disabled={!isValid || isSubmitting}
               style="orange300"
               type="submit"

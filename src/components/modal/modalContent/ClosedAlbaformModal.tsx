@@ -27,7 +27,7 @@ const CloseAlbaformModal = () => {
         <p className="modal-sub-title">모집이 종료된 알바폼 입니다.</p>
         <div className="mt-6 h-[56px] w-[327px] pc:h-[72px] pc:w-[360px]">
           <SolidButton
-            size={viewPort === "pc" ? "large" : "small"}
+            size={viewPort === "pc" ? "2xl" : "xl"}
             style="orange300"
             type="button"
             onClick={() => {

@@ -7,10 +7,12 @@ import { useModal } from "@/hooks/useModal";
 import { useParams, useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
 import { deleteAlbaformAction } from "../modalActions/deleteAlbaformAction";
+import useViewPort from "@/hooks/useViewport";
 
 const DeleteAlbaformModal = () => {
   const { closeModal } = useModal();
   const { addToast } = useToast();
+  const viewport = useViewPort();
   const router = useRouter();
   const params = useParams();
   const id = params.formId as string;
@@ -50,6 +52,7 @@ const DeleteAlbaformModal = () => {
         <p className="modal-sub-title">삭제 후 정보를 복구할 수 없어요.</p>
         <div className="mt-6 h-[56px] w-[327px] pc:h-[72px] pc:w-[360px]">
           <SolidButton
+            size={viewport === "pc" ? "2xl" : "xl"}
             style="orange300"
             type="button"
             onClick={handleDeleteAlbaform}

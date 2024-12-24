@@ -14,6 +14,7 @@ const ApplyFormButton = ({
   return (
     <div className="mt-[62px] flex flex-col gap-[10px] pc:mt-[88px] pc:flex-row pc:gap-[8px]">
       <SolidButton
+        size="xl"
         style="outOrange300"
         type="button"
         disabled={isSubmitting}
@@ -23,6 +24,7 @@ const ApplyFormButton = ({
       </SolidButton>
 
       <SolidButton
+        size="xl"
         style="orange300"
         type="submit"
         disabled={!isValid || isSubmitting}

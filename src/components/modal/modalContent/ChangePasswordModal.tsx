@@ -140,6 +140,7 @@ const ChangePasswordModal = () => {
           <div className="mt-6 flex gap-[11px] pc:mt-[30px] pc:gap-3">
             <div className={buttmonContainerStyle}>
               <SolidButton
+                size="xl"
                 style="gray100"
                 type="button"
                 onClick={() => {
@@ -151,6 +152,7 @@ const ChangePasswordModal = () => {
             </div>
             <div className={buttmonContainerStyle}>
               <SolidButton
+                size="xl"
                 disabled={!isValid || isSubmitting}
                 style="orange300"
                 type="submit"
