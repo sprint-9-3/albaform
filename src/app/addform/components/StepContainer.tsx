@@ -9,7 +9,7 @@ import {
   currentImageListAtom,
   addFromSubmitTriggerAtom,
 } from "@/atoms/addFormAtomStore";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { handleDateRangeFormat } from "@/utils/formatAddFormDate";
 import { addFormImgUpload } from "../actions/addFormImgUpload";
 import { useToast } from "@/hooks/useToast";
@@ -53,8 +53,10 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
 
   // 마운트 시 전체 임시저장 데이터 가져오기
   useEffect(() => {
-    loadAllTempData();
-  }, [loadAllTempData]);
+    if (!isEdit) {
+      loadAllTempData();
+    }
+  }, [loadAllTempData, isEdit]);
 
   // 새로 쓰기 버튼 클릭 시 전체 임시저장 데이터 초기화
   useEffect(() => {
@@ -177,7 +179,7 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="p-6">
-        <StepContent step={step} />
+        <StepContent step={step} isEdit={isEdit} />
       </form>
     </FormProvider>
   );

@@ -2,7 +2,13 @@ import StepOneContents from "./StepOneContents";
 import StepThreeContents from "./StepThreeContents";
 import StepTwoContents from "./StepTwoContents";
 
-const StepContent = ({ step }: { step: string }) => {
+const StepContent = ({
+  step,
+  isEdit,
+}: {
+  step: string;
+  isEdit: boolean | undefined;
+}) => {
   const componentsByStep = {
     stepOne: StepOneContents,
     stepTwo: StepTwoContents,
@@ -11,7 +17,7 @@ const StepContent = ({ step }: { step: string }) => {
 
   const Component = componentsByStep[step as keyof typeof componentsByStep];
 
-  return Component ? <Component /> : null;
+  return Component ? <Component isEdit={isEdit} /> : null;
 };
 
 export default StepContent;

@@ -10,7 +10,7 @@ import {
 import { useSetAtom } from "jotai";
 import LoadingSkeleton from "./LoadingSkeleton";
 
-const StepTwoContents = () => {
+const StepTwoContents = ({ isEdit }: { isEdit: boolean | undefined }) => {
   const {
     setValue,
     getValues,
@@ -89,6 +89,11 @@ const StepTwoContents = () => {
 
   // 임시 데이터 있으면 로컬스토리지에서 불러오기
   useEffect(() => {
+    if (isEdit) {
+      setLoading(false);
+      return;
+    }
+
     const localStorageData = localStorage.getItem("stepTwo");
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
@@ -99,7 +104,7 @@ const StepTwoContents = () => {
       setStepTwoData(parsedData);
     }
     setLoading(false);
-  }, [setValue, setStepTwoData, fields]);
+  }, [setValue, setStepTwoData, fields, isEdit]);
 
   if (loading) {
     return <LoadingSkeleton count={5} />;

@@ -16,7 +16,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AddFormStepProps } from "@/types/addform";
 import LoadingSkeleton from "./LoadingSkeleton";
 
-const StepThreeContents = () => {
+const StepThreeContents = ({ isEdit }: { isEdit: boolean | undefined }) => {
   const { watch, setValue } = useFormContext<z.infer<typeof addFormSchema>>();
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
   const setStepActive = useSetAtom(stepActiveAtomFamily("stepThree"));
@@ -73,6 +73,11 @@ const StepThreeContents = () => {
 
   // 임시 데이터 로컬스토리지에서 불러오기
   useEffect(() => {
+    if (isEdit) {
+      setLoading(false);
+      return;
+    }
+
     const localStorageData = localStorage.getItem("stepThree");
     if (localStorageData) {
       const data = JSON.parse(localStorageData);
@@ -81,7 +86,7 @@ const StepThreeContents = () => {
       });
     }
     setLoading(false);
-  }, [setValue, fields]);
+  }, [setValue, fields, isEdit]);
 
   if (loading) {
     return <LoadingSkeleton count={5} />;

@@ -18,7 +18,7 @@ import {
 } from "@/hooks/useAddFormStepOne";
 import { newWriteAtom } from "@/atoms/newWrite";
 
-const StepOneContents = () => {
+const StepOneContents = ({ isEdit }: { isEdit: boolean | undefined }) => {
   const { watch, setValue, stepOneData, fields } = useAddFormStepOne();
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
@@ -49,6 +49,11 @@ const StepOneContents = () => {
 
   // 임시 데이터 있으면 로컬스토리지에서 불러오기
   useEffect(() => {
+    if (isEdit) {
+      setLoading(false);
+      return;
+    }
+
     if (isNewWrite) {
       fields.forEach((field) => {
         setValue(field, "");
@@ -93,6 +98,7 @@ const StepOneContents = () => {
     loadFromLocalStorage,
     isNewWrite,
     setTemporaryDataByStep,
+    isEdit,
   ]);
 
   if (loading) {
