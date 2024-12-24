@@ -6,8 +6,14 @@ export const middleware = async (request: NextRequest) => {
   const path = url.pathname;
   const role = request.cookies.get("role");
   const referer = request.headers.get("referer");
-  const ownerPath = ["/owner", "/addform", "/addform/", "/applications/"];
-  const applicantPath = ["/applicant", "/apply/", "/myapply/"];
+  const ownerPath = [
+    "/owner",
+    "/addform",
+    "/addform/",
+    "/applications/",
+    "/myalbaform",
+  ];
+  const applicantPath = ["/applicant", "/apply/", "/myapply/", "/mypage"];
   const accessToken = request.cookies.get("accessToken");
 
   // 액세스토큰 만료 시 리프레시토큰으로 액세스토큰 재발급 후 요청 재전송
@@ -67,7 +73,11 @@ export const middleware = async (request: NextRequest) => {
 
   // 비회원이 전용페이지 접근하는 것을 차단
   if (!role && !accessToken) {
-    if (ownerPath.includes(path) || applicantPath.includes(path)) {
+    const isOwnerPath = ownerPath.some((path) => url.pathname.startsWith(path));
+    const isApplicantPath = applicantPath.some((path) =>
+      url.pathname.startsWith(path)
+    );
+    if (isOwnerPath || isApplicantPath) {
       return NextResponse.redirect(new URL("/signin/applicant", request.url));
     }
   }
