@@ -60,9 +60,7 @@ const ApplyList = ({ list, nextCursor, params, role }: Props) => {
         <ul className="mx-auto flex w-[375px] flex-col pc:mt-6 pc:w-[1481px] pc:flex-row pc:flex-wrap pc:justify-start pc:gap-x-[25px] pc:gap-y-10 tablet:mt-6 tablet:w-[750px] tablet:flex-row tablet:flex-wrap">
           {applyList?.map((item) => (
             <li key={item.id}>
-              <Link href={`/alba/${item.form.id}`}>
-                <ApplicationInfo info={item} />
-              </Link>
+              <ApplicationInfo info={item} />
             </li>
           ))}
         </ul>

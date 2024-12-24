@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 const ViewResumeButton = ({ id }: { id: number }) => {
   const router = useRouter();
   const goToMyApply = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.preventDefault();
     router.push(`/myapply/${id}`);
   };
 

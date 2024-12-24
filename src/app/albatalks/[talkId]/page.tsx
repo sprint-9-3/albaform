@@ -22,7 +22,7 @@ const AlbaTalkDetailPage = async ({ params }: pageProps) => {
   return (
     <div>
       <Header info={info} userId={Number(userId)} isLogin={accessToken} />
-      <Content content={info.content} />
+      <Content content={info.content} image={info.imageUrl} />
       <CommentSection
         id={info.id}
         userId={Number(userId)}
