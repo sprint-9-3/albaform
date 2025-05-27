@@ -43,25 +43,10 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
   const cookie = await cookies();
   const role = cookie.get("role")?.value || "Guest";
   const userId = cookie.get("id")?.value;
-  const isLogin = userId ? true : false;
   const { formId } = await params;
 
-  let data: AlbaformDetailData;
-  let isMyAlbarform = false;
-
-  try {
-    data = await fetchAlbarformDetailData(formId, isLogin);
-    isMyAlbarform = Number(userId) === data.ownerId;
-  } catch (error) {
-    console.error(error);
-
-    return (
-      <div>
-        <h1>데이터를 불러올 수 없습니다.</h1>
-        <p>잠시 후 다시 시도해주세요.</p>
-      </div>
-    );
-  }
+  const data: AlbaformDetailData = await fetchAlbarformDetailData(formId);
+  const isMyAlbarform = Number(userId) === data.ownerId;
 
   const renderActionButtons = () => {
     if (role === "APPLICANT" || role === "Guest") {

@@ -1,5 +1,5 @@
 import CopyButton from "@/components/button/CopyButton";
-import KakaoMap from "@/components/map/KakaoMap";
+import LazyKakaoMap from "@/components/map/LazyKakaoMap";
 
 const StoreLocation = ({ location }: { location: string }) => {
   return (
@@ -12,7 +12,7 @@ const StoreLocation = ({ location }: { location: string }) => {
         <CopyButton text={location} />
       </div>
       <div className="mt-2 h-[210px] w-full pc:mt-12 pc:h-[380px] pc:px-0">
-        <KakaoMap location={location} />
+        <LazyKakaoMap location={location} />
       </div>
     </section>
   );

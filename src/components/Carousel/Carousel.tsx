@@ -28,9 +28,9 @@ const Carousel = ({ imageUrls }: { imageUrls: string[] }) => {
         >
           <Image
             src={imageUrl || "/logo/albaform.svg"}
+            className="object-cover"
             fill
             alt="캐러샐 이미지"
-            priority={index === 0}
           />
         </figure>
       ))}
